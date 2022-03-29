@@ -1,24 +1,34 @@
 package com.adventureforge.gameservice.entities;
 
-import lombok.Data;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
-@Data
-public abstract class Author {
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "authors")
+@AttributeOverride(name = "id", column = @Column(name = "author_id"))
+public abstract class Author extends BaseEntity {
 
-    private int id;
-    private UUID uuid;
+    @Column
     private String firstName;
-    private String lastname;
-    private String pseudo;
-    private LocalDateTime dateCreated;
-    private LocalDateTime dateModified;
-    private String userCreated;
-    private String userModified;
 
+    @Column
+    private String lastname;
+
+    @Column
+    private String pseudo;
+
+    @ManyToMany(mappedBy = "authors")
+    @ToString.Exclude
     private List<RolePlayingGame> rolePlayingGames;
+
+    @ManyToMany(mappedBy = "authors")
+    @ToString.Exclude
     private List<Book> books;
 }

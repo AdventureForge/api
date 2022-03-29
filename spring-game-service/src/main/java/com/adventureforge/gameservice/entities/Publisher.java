@@ -1,24 +1,34 @@
 package com.adventureforge.gameservice.entities;
 
-import lombok.Data;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.List;
-import java.util.UUID;
 
-@Data
-public class Publisher {
-    private int id;
-    private UUID uuid;
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
+public class Publisher extends BaseEntity {
+
+    @Column
     private String name;
+
+    @Column
     private String websiteUrl;
+
+    @Column
     private String description;
+
+    @Column
     private String logo;
 
-    private LocalDateTime dateCreated;
-    private LocalDateTime dateModified;
-    private String userCreated;
-    private String userModified;
-
+    @OneToMany(mappedBy = "publisher")
+    @ToString.Exclude
     private List<Book> books;
 }

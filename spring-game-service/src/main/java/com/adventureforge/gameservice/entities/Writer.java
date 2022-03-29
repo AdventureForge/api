@@ -1,10 +1,14 @@
 package com.adventureforge.gameservice.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+import javax.persistence.Entity;
+
+@Builder
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
 public class Writer extends Author {
 }

@@ -1,21 +1,32 @@
 package com.adventureforge.gameservice.entities;
 
-import lombok.Data;
+import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import javax.persistence.*;
+import java.util.List;
 
-@Data
-public class BookCollection {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "collections")
+@AttributeOverride(name = "id", column = @Column(name = "collection_id"))
+public class BookCollection extends BaseEntity {
 
-    private int id;
-    private UUID uuid;
+    @Column(nullable = false)
     private String title;
+
+    @Column
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
     private Edition edition;
 
-    private LocalDateTime dateCreated;
-    private LocalDateTime dateModified;
-    private String userCreated;
-    private String userModified;
+    @OneToMany(mappedBy = "bookCollection")
+    @ToString.Exclude
+    private List<Book> books;
 }

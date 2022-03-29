@@ -1,22 +1,33 @@
 package com.adventureforge.gameservice.entities;
 
-import lombok.Data;
 
-import java.time.LocalDateTime;
+import lombok.*;
+
+import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
-@Data
-public class Edition {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "editions")
+@AttributeOverride(name = "id", column = @Column(name = "edition_id"))
+public class Edition extends BaseEntity {
 
-    private int id;
-    private UUID uuid;
-    private RolePlayingGame rolePlayingGame;
+    @Column
     private int editionNumber;
+    
+    @Column
     private String editionTitle;
 
-    private LocalDateTime dateCreated;
-    private LocalDateTime dateModified;
-    private String userCreated;
-    private String userModified;
+    @ManyToOne
+    @JoinColumn(name = "roleplayinggame_id", nullable = false)
+    private RolePlayingGame rolePlayingGame;
+
+    @OneToMany(mappedBy = "edition")
+    @ToString.Exclude
+    private List<BookCollection> bookCollections;
 }

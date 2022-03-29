@@ -1,22 +1,43 @@
 package com.adventureforge.gameservice.entities;
 
-import lombok.Data;
+import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import javax.persistence.*;
+import java.util.List;
 
-@Data
-public class RolePlayingGame {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "roleplayinggames")
+@AttributeOverride(name = "id", column = @Column(name = "roleplayinggame_id"))
+public class RolePlayingGame extends BaseEntity {
 
-    private int id;
-    private UUID uuid;
+    @Column
     private String title;
+
+    @Column
     private String subtitle;
+
+    @Column
     private String pictureUrl;
+
+    @Column
     private String websiteUrl;
 
-    private LocalDateTime dateCreated;
-    private LocalDateTime dateModified;
-    private String userCreated;
-    private String userModified;
+    @OneToMany(mappedBy = "rolePlayingGame")
+    @ToString.Exclude
+    private List<Edition> editions;
+
+    @ManyToMany
+    @JoinTable(
+            name = "authors_roleplayinggames",
+            joinColumns = @JoinColumn(name = "roleplayinggame_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    @ToString.Exclude
+    private List<Author> authors;
 }

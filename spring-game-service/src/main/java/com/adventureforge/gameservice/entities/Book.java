@@ -1,30 +1,57 @@
 package com.adventureforge.gameservice.entities;
 
-import lombok.Data;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
-@Data
-public class Book {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "books")
+@AttributeOverride(name = "id", column = @Column(name = "book_id"))
+public class Book extends BaseEntity {
 
-    private int id;
-    private UUID uuid;
+    @Column(nullable = false)
     private String title;
+
+    @Column
     private String subtitle;
+
+    @Column
     private String cover;
+
+    @Column
     private String description;
+
+    @Column
     private String language;
+
+    @Column
     private String isbn;
+
+    @ManyToOne
+    @JoinColumn(name = "publisher_id", nullable = false)
+    @ToString.Exclude
     private Publisher publisher;
+
+    @ManyToOne
+    @JoinColumn(name = "collection_id", nullable = false)
     private BookCollection bookCollection;
+
+    @Enumerated(EnumType.STRING)
     private BookCategory bookCategory;
 
-    private LocalDateTime dateCreated;
-    private LocalDateTime dateModified;
-    private String userCreated;
-    private String userModified;
-
+    @ManyToMany
+    @JoinTable(
+            name = "authors_books",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    @ToString.Exclude
     private List<Author> authors;
 }
