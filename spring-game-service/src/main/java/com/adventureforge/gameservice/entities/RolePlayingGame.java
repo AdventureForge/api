@@ -34,10 +34,10 @@ public class RolePlayingGame extends BaseEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "authors_roleplayinggames",
+            name = "writers_roleplayinggames",
             joinColumns = @JoinColumn(name = "roleplayinggame_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id")
+            inverseJoinColumns = @JoinColumn(name = "writer_id")
     )
     @ToString.Exclude
-    private List<Author> authors;
+    private List<Writer> writers;
 }

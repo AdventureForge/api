@@ -1,18 +1,19 @@
 package com.adventureforge.gameservice.entities;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.List;
 
+@SuperBuilder
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-@Entity
-@Table(name = "authors")
+@ToString()
 @AttributeOverride(name = "id", column = @Column(name = "author_id"))
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Author extends BaseEntity {
 
     @Column
@@ -23,12 +24,4 @@ public abstract class Author extends BaseEntity {
 
     @Column
     private String pseudo;
-
-    @ManyToMany(mappedBy = "authors")
-    @ToString.Exclude
-    private List<RolePlayingGame> rolePlayingGames;
-
-    @ManyToMany(mappedBy = "authors")
-    @ToString.Exclude
-    private List<Book> books;
 }

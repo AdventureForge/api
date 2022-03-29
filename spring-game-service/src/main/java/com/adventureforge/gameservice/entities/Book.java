@@ -48,10 +48,21 @@ public class Book extends BaseEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "authors_books",
+            name = "writers_books",
             joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id")
+            inverseJoinColumns = @JoinColumn(name = "writer_id")
     )
     @ToString.Exclude
-    private List<Author> authors;
+    private List<Writer> writers;
+
+    @ManyToMany
+    @JoinTable(
+            name = "illustrators_books",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "illustrator_id")
+    )
+    @ToString.Exclude
+    private List<Illustrator> illustrators;
+
+
 }
