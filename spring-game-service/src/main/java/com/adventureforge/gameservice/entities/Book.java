@@ -1,11 +1,12 @@
 package com.adventureforge.gameservice.entities;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -46,23 +47,7 @@ public class Book extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BookCategory bookCategory;
 
-    @ManyToMany
-    @JoinTable(
-            name = "writers_books",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "writer_id")
-    )
+    @OneToMany(mappedBy = "book")
     @ToString.Exclude
-    private List<Writer> writers;
-
-    @ManyToMany
-    @JoinTable(
-            name = "illustrators_books",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "illustrator_id")
-    )
-    @ToString.Exclude
-    private List<Illustrator> illustrators;
-
-
+    private Set<AuthorBook> authorBooks;
 }

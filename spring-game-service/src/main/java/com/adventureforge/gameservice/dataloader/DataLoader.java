@@ -1,16 +1,15 @@
 package com.adventureforge.gameservice.dataloader;
 
-import com.adventureforge.gameservice.entities.Author;
-import com.adventureforge.gameservice.entities.Illustrator;
-import com.adventureforge.gameservice.entities.Writer;
-import com.adventureforge.gameservice.repositories.IllustratorRepository;
-import com.adventureforge.gameservice.repositories.WriterRepository;
+import com.adventureforge.gameservice.entities.*;
+import com.adventureforge.gameservice.repositories.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -19,50 +18,77 @@ import java.util.UUID;
 @AllArgsConstructor
 public class DataLoader implements CommandLineRunner {
 
-    private final WriterRepository writerRepository;
-    private final IllustratorRepository illustratorRepository;
+    private PublisherRepository publisherRepository;
+    private BookRepository bookRepository;
+    private BookCollectionRepository bookCollectionRepository;
+    private AuthorRepository authorRepository;
+    private RolePlayingGameRepository rolePlayingGameRepository;
+    private EditionRepository editionRepository;
+    private AuthorBookRepository authorBookRepository;
 
     @Override
     public void run(String... args) throws Exception {
 
-        Writer writer1 = Writer.builder()
+        Publisher publisher = Publisher.builder()
                 .uuid(UUID.randomUUID())
-                .firstName("john")
-                .lastname("doe")
+                .name("Black Book Edition")
+                .build();
+
+
+        Edition edition = Edition.builder()
+                .uuid(UUID.randomUUID())
+                .editionNumber(1)
+                .editionTitle("1ère édition")
+                .build();
+
+        RolePlayingGame rolePlayingGame = RolePlayingGame.builder()
+                .uuid(UUID.randomUUID())
+                .title("Pavillon Noir")
+                .editions(List.of(edition))
+                .build();
+
+        edition.setRolePlayingGame(rolePlayingGame);
+
+        BookCollection bookCollection = BookCollection.builder()
+                .uuid(UUID.randomUUID())
+                .title("default")
+                .edition(edition)
+                .build();
+
+        Author author = Author.builder()
+                .uuid(UUID.randomUUID())
+                .firstName("John")
+                .lastname("Doe")
                 .pseudo("toto")
                 .build();
 
-        this.writerRepository.save(writer1);
-
-        Writer writer2 = Writer.builder()
+        Book book = Book.builder()
                 .uuid(UUID.randomUUID())
-                .firstName("jane")
-                .lastname("doe")
-                .pseudo("tata")
+                .title("livre 1")
+                .bookCategory(BookCategory.ADVENTURE)
+                .bookCollection(bookCollection)
+                .publisher(publisher)
                 .build();
 
-        this.writerRepository.save(writer2);
-
-        Illustrator illus1 = Illustrator.builder()
+        AuthorBook authorBook = AuthorBook.builder()
+                .author(author)
+                .book(book)
                 .uuid(UUID.randomUUID())
-                .firstName("albert")
-                .lastname("dupont")
-                .pseudo("al")
+                .writer(true)
+                .illustrator(false)
+                .authorBookKey(new AuthorBookKey(book.getId(), author.getId()))
                 .build();
 
-        this.illustratorRepository.save(illus1);
+        author.setAuthorBooks(Set.of(authorBook));
+        book.setAuthorBooks(Set.of(authorBook));
 
-        Illustrator illus2 = Illustrator.builder()
-                .uuid(UUID.randomUUID())
-                .firstName("jeanne")
-                .lastname("dofour")
-                .pseudo("jaja")
-                .build();
+        this.publisherRepository.save(publisher);
+        this.rolePlayingGameRepository.save(rolePlayingGame);
+        this.editionRepository.save(edition);
+        this.bookCollectionRepository.save(bookCollection);
+        this.authorRepository.save(author);
+        this.bookRepository.save(book);
+        this.authorBookRepository.save(authorBook);
 
-        this.illustratorRepository.save(illus2);
-
-        Author author = this.writerRepository.findById(1).get();
-
-        log.info("Author found : {}", author.toString());
     }
 }

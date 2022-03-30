@@ -1,11 +1,12 @@
 package com.adventureforge.gameservice.entities;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -31,13 +32,4 @@ public class RolePlayingGame extends BaseEntity {
     @OneToMany(mappedBy = "rolePlayingGame")
     @ToString.Exclude
     private List<Edition> editions;
-
-    @ManyToMany
-    @JoinTable(
-            name = "writers_roleplayinggames",
-            joinColumns = @JoinColumn(name = "roleplayinggame_id"),
-            inverseJoinColumns = @JoinColumn(name = "writer_id")
-    )
-    @ToString.Exclude
-    private List<Writer> writers;
 }

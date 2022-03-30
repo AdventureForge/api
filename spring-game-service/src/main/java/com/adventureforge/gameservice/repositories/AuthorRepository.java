@@ -1,9 +1,9 @@
 package com.adventureforge.gameservice.repositories;
 
-import com.adventureforge.gameservice.entities.Illustrator;
+import com.adventureforge.gameservice.entities.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IllustratorRepository extends JpaRepository<Illustrator, Integer> {
+public interface AuthorRepository extends JpaRepository<Author, Integer> {
 }

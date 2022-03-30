@@ -2,11 +2,12 @@ package com.adventureforge.gameservice.entities;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -19,7 +20,7 @@ public class Edition extends BaseEntity {
 
     @Column
     private int editionNumber;
-    
+
     @Column
     private String editionTitle;
 
