@@ -19,10 +19,7 @@ import java.util.Set;
 @AttributeOverride(name = "id", column = @Column(name = "author_id"))
 public class Author extends BaseEntity {
 
-    @Column
     private String firstname;
-
-    @Column
     private String lastname;
 
     @OneToMany(mappedBy = "author")
