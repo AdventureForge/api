@@ -12,8 +12,7 @@ import java.util.UUID;
 public class AuthorDTO {
 
     private UUID uuid;
-    private String firstName;
+    private String firstname;
     private String lastname;
-    private String pseudo;
     private Set<UUID> booksUuids;
 }

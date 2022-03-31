@@ -58,9 +58,8 @@ public class DataLoader implements CommandLineRunner {
 
         Author author = Author.builder()
                 .uuid(UUID.randomUUID())
-                .firstName("John")
+                .firstname("John")
                 .lastname("Doe")
-                .pseudo("toto")
                 .build();
 
         Book book = Book.builder()

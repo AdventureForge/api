@@ -29,16 +29,18 @@ public abstract class BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true, nullable = false)
+    @Column
     private UUID uuid;
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime dateCreated;
 
     @LastModifiedDate
     private LocalDateTime lastModified;
 
     @CreatedBy
+    @Column(updatable = false)
     private String userCreated;
 
     @LastModifiedBy

@@ -12,14 +12,15 @@ public interface AuthorMapper {
     default AuthorDTO toDTO(Author author) {
         return AuthorDTO.builder()
                 .uuid(author.getUuid())
-                .firstName(author.getFirstName())
+                .firstname(author.getFirstname())
                 .lastname(author.getLastname())
-                .pseudo(author.getPseudo())
                 .booksUuids(
-                        author.getAuthorBooks()
-                                .stream()
-                                .map(authorBook -> authorBook.getAuthor().getUuid())
-                                .collect(Collectors.toSet()))
+                        author.getAuthorBooks() == null ?
+                                null :
+                                author.getAuthorBooks()
+                                        .stream()
+                                        .map(authorBook -> authorBook.getAuthor().getUuid())
+                                        .collect(Collectors.toSet()))
                 .build();
     }
 

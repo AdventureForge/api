@@ -20,13 +20,10 @@ import java.util.Set;
 public class Author extends BaseEntity {
 
     @Column
-    private String firstName;
+    private String firstname;
 
     @Column
     private String lastname;
-
-    @Column
-    private String pseudo;
 
     @OneToMany(mappedBy = "author")
     @ToString.Exclude
