@@ -29,6 +29,7 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+
         Publisher publisher = Publisher.builder()
                 .uuid(UUID.randomUUID())
                 .name("Black Book Edition")
@@ -89,6 +90,8 @@ public class DataLoader implements CommandLineRunner {
         this.authorRepository.save(author);
         this.bookRepository.save(book);
         this.authorBookRepository.save(authorBook);
+
+        log.info(author.getUuid().toString());
 
     }
 }
