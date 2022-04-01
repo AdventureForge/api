@@ -1,6 +1,6 @@
 package com.adventureforge.gameservice.mappers;
 
-import com.adventureforge.gameservice.dtos.AuthorDTO;
+import com.adventureforge.gameservice.dto.AuthorDTO;
 import com.adventureforge.gameservice.entities.Author;
 import org.mapstruct.Mapper;
 

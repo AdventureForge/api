@@ -1,12 +1,14 @@
 package com.adventureforge.gameservice.controllers;
 
-import com.adventureforge.gameservice.dtos.AuthorDTO;
+import com.adventureforge.gameservice.dto.AuthorDTO;
 import com.adventureforge.gameservice.mappers.AuthorMapper;
 import com.adventureforge.gameservice.services.AuthorService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,9 +48,9 @@ public class AuthorController {
         return this.authorMapper.toDTO(this.authorService.findById(UUID.fromString(uuid)));
     }
 
-
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public AuthorDTO create(@RequestBody AuthorDTO authorDTO) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public AuthorDTO create(@RequestBody @Valid AuthorDTO authorDTO) {
         return this.authorMapper.toDTO(
                 this.authorService.save(
                         this.authorMapper.toEntity(authorDTO)
@@ -57,7 +59,7 @@ public class AuthorController {
     }
 
     @PutMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AuthorDTO update(@PathVariable("uuid") String uuid, @RequestBody AuthorDTO authorDTO) {
+    public AuthorDTO update(@PathVariable("uuid") @Valid String uuid, @RequestBody @Valid AuthorDTO authorDTO) {
         return this.authorMapper.toDTO(
                 this.authorService.update(
                         UUID.fromString(uuid),
