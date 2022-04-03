@@ -1,6 +1,7 @@
 package com.adventureforge.gameservice.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -26,9 +27,11 @@ public class Edition extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "roleplayinggame_id", nullable = false)
+    @JsonIgnoreProperties(value = "editions")
     private RolePlayingGame rolePlayingGame;
 
     @OneToMany(mappedBy = "edition")
+    @JsonIgnoreProperties(value = {"books", "edition"})
     @ToString.Exclude
     private List<BookCollection> bookCollections;
 }

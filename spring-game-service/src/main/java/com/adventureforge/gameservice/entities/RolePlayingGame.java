@@ -1,5 +1,6 @@
 package com.adventureforge.gameservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -30,6 +31,7 @@ public class RolePlayingGame extends BaseEntity {
     private String websiteUrl;
 
     @OneToMany(mappedBy = "rolePlayingGame")
+    @JsonIgnoreProperties(value = "rolePlayingGame")
     @ToString.Exclude
     private List<Edition> editions;
 }

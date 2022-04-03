@@ -1,5 +1,6 @@
 package com.adventureforge.gameservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -30,6 +31,7 @@ public class Publisher extends BaseEntity {
     private String logo;
 
     @OneToMany(mappedBy = "publisher")
+    @JsonIgnoreProperties(value = "publisher")
     @ToString.Exclude
     private List<Book> books;
 }

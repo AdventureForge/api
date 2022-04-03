@@ -1,5 +1,6 @@
 package com.adventureforge.gameservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -37,17 +38,20 @@ public class Book extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "publisher_id", nullable = false)
+    @JsonIgnoreProperties(value = "books")
     @ToString.Exclude
     private Publisher publisher;
 
     @ManyToOne
     @JoinColumn(name = "collection_id", nullable = false)
+    @JsonIgnoreProperties(value = "books")
     private BookCollection bookCollection;
 
     @Enumerated(EnumType.STRING)
     private BookCategory bookCategory;
 
     @OneToMany(mappedBy = "book")
+    @JsonIgnoreProperties(value = "book")
     @ToString.Exclude
     private Set<AuthorBook> authorBooks;
 }

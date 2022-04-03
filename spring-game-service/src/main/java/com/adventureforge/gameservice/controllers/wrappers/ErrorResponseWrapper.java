@@ -1,4 +1,4 @@
-package com.adventureforge.gameservice.controllers.responsewrappers;
+package com.adventureforge.gameservice.controllers.wrappers;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

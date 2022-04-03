@@ -1,4 +1,4 @@
-package com.adventureforge.gameservice.controllers.responsewrappers;
+package com.adventureforge.gameservice.controllers.wrappers;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

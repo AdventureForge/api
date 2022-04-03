@@ -1,5 +1,6 @@
 package com.adventureforge.gameservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString()
+@ToString(callSuper = true)
 @AttributeOverride(name = "id", column = @Column(name = "author_id"))
 public class Author extends BaseEntity {
 
@@ -23,6 +24,7 @@ public class Author extends BaseEntity {
     private String lastname;
 
     @OneToMany(mappedBy = "author")
+    @JsonIgnoreProperties(value = "author")
     @ToString.Exclude
     private Set<AuthorBook> authorBooks;
 }

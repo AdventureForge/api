@@ -5,7 +5,10 @@ import com.adventureforge.gameservice.exceptions.EntityNotFoundException;
 import com.adventureforge.gameservice.repositories.AuthorRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,32 +25,26 @@ public class AuthorService {
     private static final String FIRSTNAME_PARAM = "firstname";
     private static final String UUID_PARAM = "uuid";
 
-    public List<Author> findAllPaginated(int page, int size) {
-
-        return this.authorRepository
-                .findAll(
-                        PageRequest.of(
-                                page,
-                                size,
-                                Sort
-                                        .by(LASTNAME_PARAM)
-                                        .ascending()))
-                .stream()
-                .toList();
+    public Page<Author> findAllPaginated(Pageable pageable) {
+        return this.authorRepository.findAll(pageable);
     }
 
-    public List<Author> searchByNamePaginated(String name, int page, int size) {
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(LASTNAME_PARAM).ascending());
+    public List<Author> searchByNamePaginated(String name, Pageable pageable) {
         ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny()
                 .withMatcher(FIRSTNAME_PARAM, ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withMatcher(LASTNAME_PARAM, ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
         Author authorToSearch = Author.builder().firstname(name).lastname(name).build();
 
-        return this.authorRepository
+        List<Author> authorsFound = this.authorRepository
                 .findAll(Example.of(authorToSearch, exampleMatcher), pageable)
                 .stream()
                 .toList();
+
+        if (!authorsFound.isEmpty()) {
+            return authorsFound;
+        } else {
+            throw new EntityNotFoundException(Author.class, "name", name);
+        }
     }
 
     public Author findById(UUID uuid) {
@@ -62,12 +59,15 @@ public class AuthorService {
 
     public Author update(UUID uuid, Author authorToUpdate) {
         return this.authorRepository.findByUuid(uuid)
-                .map(authorFromDb -> this.authorRepository.save(Author.builder()
-                        .id(authorFromDb.getId())
-                        .uuid(authorFromDb.getUuid())
-                        .firstname(authorToUpdate.getFirstname())
-                        .lastname(authorToUpdate.getLastname())
-                        .build()))
+                .map(authorFromDb -> {
+                    log.info("passage par le mapper");
+                    return this.authorRepository.save(Author.builder()
+                            .id(authorFromDb.getId())
+                            .uuid(authorFromDb.getUuid())
+                            .firstname(authorToUpdate.getFirstname())
+                            .lastname(authorToUpdate.getLastname())
+                            .build());
+                })
                 .orElseThrow(() -> new EntityNotFoundException(Author.class, UUID_PARAM, uuid, "authorToUpdate", authorToUpdate));
     }
 
