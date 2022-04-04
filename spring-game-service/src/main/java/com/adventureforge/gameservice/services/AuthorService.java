@@ -25,20 +25,24 @@ public class AuthorService {
     private static final String FIRSTNAME_PARAM = "firstname";
     private static final String UUID_PARAM = "uuid";
 
+    public List<Author> findAll() {
+        return this.authorRepository.findAll();
+    }
+
     public Page<Author> findAllPaginated(Pageable pageable) {
         return this.authorRepository.findAll(pageable);
     }
 
-    public List<Author> searchByNamePaginated(String name, Pageable pageable) {
+    public Page<Author> searchByNamePaginated(String name, Pageable pageable) {
         ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny()
                 .withMatcher(FIRSTNAME_PARAM, ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withMatcher(LASTNAME_PARAM, ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
         Author authorToSearch = Author.builder().firstname(name).lastname(name).build();
 
-        List<Author> authorsFound = this.authorRepository
-                .findAll(Example.of(authorToSearch, exampleMatcher), pageable)
-                .stream()
-                .toList();
+        Page<Author> authorsFound = this.authorRepository.findAll(
+                Example.of(authorToSearch, exampleMatcher),
+                pageable
+        );
 
         if (!authorsFound.isEmpty()) {
             return authorsFound;

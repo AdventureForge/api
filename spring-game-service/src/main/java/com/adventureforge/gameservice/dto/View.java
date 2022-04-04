@@ -2,15 +2,17 @@ package com.adventureforge.gameservice.dto;
 
 public interface View {
 
-    interface POST {
-    }
+    interface External {
+        interface POST {
+        }
 
-    interface PUT {
-    }
+        interface PUT {
+        }
 
-    interface GET {
-    }
+        interface GET {
+        }
 
-    interface NONE {
+        interface NONE {
+        }
     }
 }
