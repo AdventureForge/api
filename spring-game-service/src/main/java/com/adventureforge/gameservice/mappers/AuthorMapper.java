@@ -19,7 +19,7 @@ public interface AuthorMapper {
                                 null :
                                 author.getAuthorBooks()
                                         .stream()
-                                        .map(authorBook -> authorBook.getAuthor().getUuid())
+                                        .map(authorBook -> authorBook.getBook().getUuid())
                                         .collect(Collectors.toSet()))
                 .build();
     }

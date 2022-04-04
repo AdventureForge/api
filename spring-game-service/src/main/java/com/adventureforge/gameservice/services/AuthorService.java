@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -23,10 +22,6 @@ public class AuthorService {
     private static final String LASTNAME_PARAM = "lastname";
     private static final String FIRSTNAME_PARAM = "firstname";
     private static final String UUID_PARAM = "uuid";
-
-    public List<Author> findAll() {
-        return this.authorRepository.findAll();
-    }
 
     public Page<Author> findAllPaginated(Pageable pageable) {
         return this.authorRepository.findAll(pageable);
