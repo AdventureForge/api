@@ -57,7 +57,6 @@ public class ResponseWrapper<T> {
                     .totalPages(((Page<?>) t).getTotalPages())
                     .pageNumber(((Page<?>) t).getPageable().getPageNumber())
                     .pageSize(((Page<?>) t).getSize())
-                    .pageSize(((Page<?>) t).getSize())
                     .build()
             );
         } else {
@@ -65,5 +64,9 @@ public class ResponseWrapper<T> {
             responseWrapper.setLength(1);
         }
         return responseWrapper;
+    }
+
+    public static <T> ResponseWrapper<T> wrapPageToList(Page<?> page) {
+        return ResponseWrapper.wrap((T) page);
     }
 }

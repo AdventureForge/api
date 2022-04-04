@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -63,24 +62,24 @@ public class AuthorService {
 
     public Author update(UUID uuid, Author authorToUpdate) {
         return this.authorRepository.findByUuid(uuid)
-                .map(authorFromDb -> {
-                    log.info("passage par le mapper");
-                    return this.authorRepository.save(Author.builder()
-                            .id(authorFromDb.getId())
-                            .uuid(authorFromDb.getUuid())
-                            .firstname(authorToUpdate.getFirstname())
-                            .lastname(authorToUpdate.getLastname())
-                            .build());
-                })
-                .orElseThrow(() -> new EntityNotFoundException(Author.class, UUID_PARAM, uuid, "authorToUpdate", authorToUpdate));
+                .map(authorFromDb -> this.authorRepository.save(
+                        Author.builder()
+                                .id(authorFromDb.getId())
+                                .uuid(authorFromDb.getUuid())
+                                .firstname(authorToUpdate.getFirstname())
+                                .lastname(authorToUpdate.getLastname())
+                                .build()))
+                .orElseThrow(() -> new EntityNotFoundException(
+                        Author.class, UUID_PARAM, uuid, "authorToUpdate", authorToUpdate)
+                );
     }
 
     public void delete(UUID uuid) {
-        Optional<Author> authorFromDb = this.authorRepository.findByUuid(uuid);
-        if (authorFromDb.isPresent()) {
-            this.authorRepository.delete(authorFromDb.get());
-        } else {
-            throw new EntityNotFoundException(Author.class, UUID_PARAM, uuid);
-        }
+        Author authorToDelete = this.authorRepository
+                .findByUuid(uuid)
+                .orElseThrow(() -> new EntityNotFoundException(Author.class, UUID_PARAM, uuid));
+
+        this.authorRepository.deleteById(authorToDelete.getId());
+
     }
 }

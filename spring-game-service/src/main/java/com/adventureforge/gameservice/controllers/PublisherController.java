@@ -9,14 +9,14 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.UUID;
 
 import static com.adventureforge.gameservice.controllers.wrappers.ResponseWrapper.wrap;
 
@@ -32,8 +32,58 @@ public class PublisherController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
-    public ResponseWrapper<Page<PublisherDTO>> findAllPaginated(@ParameterObject Pageable pageable) {
-        return wrap(this.publisherService.findAllPaginated(pageable)
-                .map(publisherMapper::toDTO));
+    public ResponseWrapper<List<PublisherDTO>> findAllPaginated(@ParameterObject Pageable pageable) {
+
+        return ResponseWrapper.wrapPageToList(
+                this.publisherService.findAllPaginated(pageable)
+                        .map(publisherMapper::toDTO)
+        );
+    }
+
+    @GetMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @JsonView(value = View.External.GET.class)
+    public ResponseWrapper<PublisherDTO> findByUuid(@PathVariable("uuid") String uuid) {
+        return wrap(
+                publisherMapper.toDTO(
+                        this.publisherService.findByUuid(UUID.fromString(uuid))
+                )
+        );
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @JsonView(value = View.External.GET.class)
+    public ResponseWrapper<PublisherDTO> create(
+            @RequestBody @JsonView(View.External.POST.class) @Valid PublisherDTO publisherDTO) {
+        return wrap(
+                this.publisherMapper.toDTO(
+                        this.publisherService.save(
+                                this.publisherMapper.toEntity(publisherDTO)
+                        )
+                )
+        );
+    }
+
+    @PutMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @JsonView(value = View.External.GET.class)
+    public ResponseWrapper<PublisherDTO> update(
+            @PathVariable("uuid") String uuid,
+            @RequestBody @JsonView(View.External.PUT.class) @Valid PublisherDTO publisherDTO) {
+        return wrap(
+                this.publisherMapper.toDTO(
+                        this.publisherService.update(
+                                UUID.fromString(uuid),
+                                this.publisherMapper.toEntity(publisherDTO)
+                        )
+                )
+        );
+    }
+
+    @DeleteMapping(path = "/{uuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("uuid") String uuid) {
+        this.publisherService.deleteByUuid(UUID.fromString(uuid));
     }
 }
