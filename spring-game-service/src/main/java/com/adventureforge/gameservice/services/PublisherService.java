@@ -28,7 +28,7 @@ public class PublisherService {
                 .orElseThrow(() -> new EntityNotFoundException(Publisher.class, UUID_PARAM, uuid));
     }
 
-    public Publisher save(Publisher publisher) {
+    public Publisher create(Publisher publisher) {
         publisher.setUuid(UUID.randomUUID());
         return this.publisherRepository.save(publisher);
     }
@@ -49,10 +49,7 @@ public class PublisherService {
     }
 
     public void deleteByUuid(UUID uuid) {
-        Publisher publisherToDelete = this.publisherRepository
-                .findByUuid(uuid)
-                .orElseThrow(() -> new EntityNotFoundException(Publisher.class, UUID_PARAM, uuid));
-
+        Publisher publisherToDelete = this.findByUuid(uuid);
         this.publisherRepository.deleteById(publisherToDelete.getId());
     }
 }

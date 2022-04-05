@@ -58,7 +58,7 @@ public class PublisherController {
             @RequestBody @JsonView(View.External.POST.class) @Valid PublisherDTO publisherDTO) {
         return wrap(
                 this.publisherMapper.toDTO(
-                        this.publisherService.save(
+                        this.publisherService.create(
                                 this.publisherMapper.toEntity(publisherDTO)
                         )
                 )
