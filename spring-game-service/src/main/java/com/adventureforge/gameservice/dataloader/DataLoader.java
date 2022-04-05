@@ -29,13 +29,11 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-
         Publisher publisher = Publisher.builder()
                 .uuid(UUID.randomUUID())
                 .name("Black Book Edition")
                 .websiteUrl("https://www.black-book-editions.fr/")
                 .build();
-
 
         Edition edition1 = Edition.builder()
                 .uuid(UUID.randomUUID())

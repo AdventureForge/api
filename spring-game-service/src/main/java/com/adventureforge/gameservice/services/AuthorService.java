@@ -45,12 +45,12 @@ public class AuthorService {
         }
     }
 
-    public Author findById(UUID uuid) {
+    public Author findByUuid(UUID uuid) {
         return this.authorRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException(Author.class, UUID_PARAM, uuid));
     }
 
-    public Author save(Author author) {
+    public Author create(Author author) {
         author.setUuid(UUID.randomUUID());
         return this.authorRepository.save(author);
     }
@@ -70,10 +70,7 @@ public class AuthorService {
     }
 
     public void delete(UUID uuid) {
-        Author authorToDelete = this.authorRepository
-                .findByUuid(uuid)
-                .orElseThrow(() -> new EntityNotFoundException(Author.class, UUID_PARAM, uuid));
-
+        Author authorToDelete = this.findByUuid(uuid);
         this.authorRepository.deleteById(authorToDelete.getId());
 
     }

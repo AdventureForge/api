@@ -60,7 +60,7 @@ public class AuthorController {
         return wrap(
                 this.authorMapper.toDTO(
                         this.authorService
-                                .findById(UUID.fromString(uuid))
+                                .findByUuid(UUID.fromString(uuid))
                 )
         );
     }
@@ -71,7 +71,7 @@ public class AuthorController {
     public ResponseWrapper<AuthorDTO> create(@RequestBody @Valid @JsonView(value = View.External.POST.class) AuthorDTO authorDTO) {
         return wrap(
                 this.authorMapper.toDTO(
-                        this.authorService.save(
+                        this.authorService.create(
                                 this.authorMapper.toEntity(authorDTO)
                         )
                 )
