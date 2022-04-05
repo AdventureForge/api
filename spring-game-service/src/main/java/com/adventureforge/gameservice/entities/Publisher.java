@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.List;
+import java.util.Set;
 
 @SuperBuilder
 @AllArgsConstructor
@@ -33,5 +33,5 @@ public class Publisher extends BaseEntity {
     @OneToMany(mappedBy = "publisher")
     @JsonIgnoreProperties(value = "publisher")
     @ToString.Exclude
-    private List<Book> books;
+    private Set<Book> books;
 }

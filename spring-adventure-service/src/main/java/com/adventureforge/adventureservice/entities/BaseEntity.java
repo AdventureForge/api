@@ -1,7 +1,10 @@
-package com.adventureforge.gameservice.entities;
+package com.adventureforge.adventureservice.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -13,46 +16,31 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class AuthorBook implements Serializable {
+public abstract class BaseEntity implements Serializable {
 
-    @EmbeddedId
-    private AuthorBookKey authorBookKey;
-
-    @ManyToOne
-    @MapsId("bookId")
-    @JsonIgnoreProperties("authorBooks")
-    @JoinColumn(name = "book_id")
-    private Book book;
-
-    @ManyToOne
-    @MapsId("authorId")
-    @JsonIgnoreProperties(value = "authorBooks")
-    @JoinColumn(name = "author_id")
-    private Author author;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column
-    private boolean writer;
-
-    @Column
-    private boolean illustrator;
-
-    @Column(unique = true, nullable = false)
     private UUID uuid;
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime dateCreated;
 
     @LastModifiedDate
     private LocalDateTime lastModified;
 
     @CreatedBy
+    @Column(updatable = false)
     private String userCreated;
 
     @LastModifiedBy

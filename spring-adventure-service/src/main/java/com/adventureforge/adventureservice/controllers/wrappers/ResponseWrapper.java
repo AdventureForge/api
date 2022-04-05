@@ -1,7 +1,7 @@
 package com.adventureforge.adventureservice.controllers.wrappers;
 
 
-import com.adventureforge.gameservice.dto.View;
+import com.adventureforge.adventureservice.dto.View;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;

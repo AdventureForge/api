@@ -6,7 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @SuperBuilder
 @AllArgsConstructor
@@ -33,5 +33,5 @@ public class Edition extends BaseEntity {
     @OneToMany(mappedBy = "edition")
     @JsonIgnoreProperties(value = {"books", "edition"})
     @ToString.Exclude
-    private List<BookCollection> bookCollections;
+    private Set<BookCollection> bookCollections;
 }
