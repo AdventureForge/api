@@ -17,11 +17,13 @@ public interface RolePlayingGameMapper {
                 .subtitle(rolePlayingGame.getSubtitle())
                 .pictureUrl(rolePlayingGame.getPictureUrl())
                 .websiteUrl(rolePlayingGame.getWebsiteUrl())
-                .editionsUuids(rolePlayingGame.getEditions()
-                        .stream()
-                        .map(Edition::getUuid)
-                        .collect(Collectors.toSet()
-                        )
+                .editionsUuids(rolePlayingGame.getEditions() == null ?
+                        null :
+                        rolePlayingGame.getEditions()
+                                .stream()
+                                .map(Edition::getUuid)
+                                .collect(Collectors.toSet()
+                                )
                 )
                 .build();
     }

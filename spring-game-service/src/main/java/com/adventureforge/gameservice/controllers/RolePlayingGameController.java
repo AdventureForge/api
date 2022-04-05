@@ -12,13 +12,13 @@ import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
+import static com.adventureforge.gameservice.controllers.wrappers.ResponseWrapper.wrap;
 import static com.adventureforge.gameservice.controllers.wrappers.ResponseWrapper.wrapPageToList;
 
 @Tag(name = "RolePlayingGames")
@@ -39,4 +39,55 @@ public class RolePlayingGameController {
                         .map(rolePlayingGameMapper::toDTO)
         );
     }
+
+    @GetMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @JsonView(View.External.GET.class)
+    public ResponseWrapper<RolePlayingGameDTO> findByUuid(@PathVariable String uuid) {
+        return wrap(
+                this.rolePlayingGameMapper.toDTO(
+                        this.rolePlayingGameService.findByUuid(
+                                UUID.fromString(uuid)
+                        )
+                )
+        );
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @JsonView(View.External.GET.class)
+    public ResponseWrapper<RolePlayingGameDTO> create(
+            @RequestBody @Valid @JsonView(View.External.POST.class) RolePlayingGameDTO rolePlayingGameDTO) {
+        return wrap(
+                this.rolePlayingGameMapper.toDTO(
+                        this.rolePlayingGameService.create(
+                                this.rolePlayingGameMapper.toEntity(rolePlayingGameDTO)
+                        )
+                )
+        );
+    }
+
+    @PutMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @JsonView(View.External.GET.class)
+    public ResponseWrapper<RolePlayingGameDTO> update(
+            @PathVariable("uuid") String uuid,
+            @RequestBody @Valid @JsonView(View.External.PUT.class) RolePlayingGameDTO rolePlayingGameDTO) {
+        return wrap(
+                this.rolePlayingGameMapper.toDTO(
+                        this.rolePlayingGameService.update(
+                                UUID.fromString(uuid),
+                                this.rolePlayingGameMapper.toEntity(rolePlayingGameDTO)
+                        )
+                )
+        );
+    }
+
+    @DeleteMapping(path = "/{uuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("uuid") String uuid) {
+        this.rolePlayingGameService.deleteByUuid(UUID.fromString(uuid));
+    }
+
+
 }
