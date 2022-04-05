@@ -22,6 +22,9 @@ public class BookDTO {
     private String title;
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
+    private String subtitle;
+
+    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String cover;
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
