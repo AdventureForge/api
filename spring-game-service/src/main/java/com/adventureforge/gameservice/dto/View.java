@@ -11,8 +11,5 @@ public interface View {
 
         interface GET {
         }
-
-        interface NONE {
-        }
     }
 }

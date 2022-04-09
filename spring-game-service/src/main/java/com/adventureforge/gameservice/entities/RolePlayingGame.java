@@ -1,10 +1,18 @@
 package com.adventureforge.gameservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 
 @SuperBuilder
@@ -27,7 +35,7 @@ public class RolePlayingGame extends BaseEntity {
     @Column
     private String pictureUrl;
 
-    @Column
+    @Column(length = 2048)
     private String websiteUrl;
 
     @OneToMany(mappedBy = "rolePlayingGame")

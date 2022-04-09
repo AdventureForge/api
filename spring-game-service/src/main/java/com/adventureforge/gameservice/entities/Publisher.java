@@ -1,7 +1,11 @@
 package com.adventureforge.gameservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
@@ -21,7 +25,7 @@ public class Publisher extends BaseEntity {
     @Column
     private String name;
 
-    @Column
+    @Column(length = 2048)
     private String websiteUrl;
 
     @Column

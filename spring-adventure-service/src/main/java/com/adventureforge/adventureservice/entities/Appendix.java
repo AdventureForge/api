@@ -1,6 +1,5 @@
 package com.adventureforge.adventureservice.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +10,7 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.Set;
@@ -24,23 +22,20 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@Table(name = "campaign")
-@AttributeOverride(name = "id", column = @Column(name = "campaign_id"))
-public class Campaign extends BaseEntity {
+@Table(name = "appendix")
+@AttributeOverride(name = "id", column = @Column(name = "appendix_id"))
+public class Appendix extends BaseEntity {
 
-    @Column(name = "title")
+    @Column
     private String title;
 
     @Column(length = 1024)
     private String description;
 
-    @ManyToMany
-    @JoinTable(
-            name = "campaign_adventure",
-            joinColumns = @JoinColumn(name = "campaign_id"),
-            inverseJoinColumns = @JoinColumn(name = "adventure_id")
-    )
-    @JsonIgnoreProperties(value = "campaigns")
+    @Lob
+    private String textContent;
+
+    @ManyToMany(mappedBy = "appendices")
     @ToString.Exclude
     private Set<Adventure> adventures;
 }

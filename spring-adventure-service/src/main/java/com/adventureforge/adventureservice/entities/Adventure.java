@@ -21,6 +21,9 @@ public class Adventure extends BaseEntity {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToMany(mappedBy = "adventures")
     @ToString.Exclude
     private Set<Campaign> campaigns;
@@ -38,7 +41,7 @@ public class Adventure extends BaseEntity {
     )
     @JsonIgnoreProperties(value = "adventures")
     @ToString.Exclude
-    private Set<Appendice> appendices;
+    private Set<Appendix> appendices;
 
     @ManyToMany
     @JoinTable(
@@ -54,4 +57,12 @@ public class Adventure extends BaseEntity {
     @JsonIgnoreProperties(value = {"previousAdventures", "nextAdventures"})
     @ToString.Exclude
     private Set<Adventure> previousAdventures;
+
+    @ManyToMany(mappedBy = "adventures")
+    @ToString.Exclude
+    private Set<Npc> npcs;
+
+    @ManyToMany(mappedBy = "adventures")
+    @ToString.Exclude
+    private Set<Place> places;
 }

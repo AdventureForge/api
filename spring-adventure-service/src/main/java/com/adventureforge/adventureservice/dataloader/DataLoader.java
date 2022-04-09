@@ -1,7 +1,5 @@
 package com.adventureforge.adventureservice.dataloader;
 
-import com.adventureforge.adventureservice.entities.Adventure;
-import com.adventureforge.adventureservice.entities.Scene;
 import com.adventureforge.adventureservice.repositories.AdventureRepository;
 import com.adventureforge.adventureservice.repositories.SceneRepository;
 import lombok.AllArgsConstructor;
@@ -10,9 +8,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 @Slf4j
 @Transactional
@@ -25,7 +20,7 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+/*
         Adventure adventure = Adventure
                 .builder()
                 .uuid(UUID.randomUUID())
@@ -71,6 +66,6 @@ public class DataLoader implements CommandLineRunner {
         scene4.setNextScenes(Set.of(scene5));
 
         this.adventureRepository.save(adventure);
-        this.sceneRepository.saveAll(List.of(scene1, scene2, scene3, scene4, scene5));
+        this.sceneRepository.saveAll(List.of(scene1, scene2, scene3, scene4, scene5));*/
     }
 }
