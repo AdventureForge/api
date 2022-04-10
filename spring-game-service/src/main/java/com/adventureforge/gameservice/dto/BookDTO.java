@@ -1,7 +1,5 @@
 package com.adventureforge.gameservice.dto;
 
-import com.adventureforge.gameservice.entities.BookCollection;
-import com.adventureforge.gameservice.entities.Publisher;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -69,14 +67,4 @@ public class BookDTO {
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String category;
-
-    private PublisherDTO publisherDTO;
-
-    private BookCollectionDTO bookCollectionDTO;
-
-    private Publisher publisher;
-
-    private BookCollection bookCollection;
-
-
 }
