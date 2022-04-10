@@ -1,10 +1,20 @@
 package com.adventureforge.gameservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
 @SuperBuilder
@@ -18,14 +28,14 @@ import java.util.Set;
 @AttributeOverride(name = "id", column = @Column(name = "collection_id"))
 public class BookCollection extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column()
     private String title;
 
     @Column
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id")
     @JsonIgnoreProperties(value = "bookCollections")
     private Edition edition;
 

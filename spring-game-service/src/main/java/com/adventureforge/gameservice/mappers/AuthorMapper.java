@@ -2,6 +2,7 @@ package com.adventureforge.gameservice.mappers;
 
 import com.adventureforge.gameservice.dto.AuthorDTO;
 import com.adventureforge.gameservice.entities.Author;
+import com.adventureforge.gameservice.entities.BaseEntity;
 import org.mapstruct.Mapper;
 
 import java.util.stream.Collectors;
@@ -15,11 +16,11 @@ public interface AuthorMapper {
                 .firstname(author.getFirstname())
                 .lastname(author.getLastname())
                 .booksUuids(
-                        author.getAuthorBooks() == null ?
+                        author.getBooks() == null ?
                                 null :
-                                author.getAuthorBooks()
+                                author.getBooks()
                                         .stream()
-                                        .map(authorBook -> authorBook.getBook().getUuid())
+                                        .map(BaseEntity::getUuid)
                                         .collect(Collectors.toSet()))
                 .build();
     }

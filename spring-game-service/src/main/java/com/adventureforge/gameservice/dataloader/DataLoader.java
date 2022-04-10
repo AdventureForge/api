@@ -1,7 +1,18 @@
 package com.adventureforge.gameservice.dataloader;
 
-import com.adventureforge.gameservice.entities.*;
-import com.adventureforge.gameservice.repositories.*;
+import com.adventureforge.gameservice.entities.Author;
+import com.adventureforge.gameservice.entities.Book;
+import com.adventureforge.gameservice.entities.BookCategory;
+import com.adventureforge.gameservice.entities.BookCollection;
+import com.adventureforge.gameservice.entities.Edition;
+import com.adventureforge.gameservice.entities.Publisher;
+import com.adventureforge.gameservice.entities.RolePlayingGame;
+import com.adventureforge.gameservice.repositories.AuthorRepository;
+import com.adventureforge.gameservice.repositories.BookCollectionRepository;
+import com.adventureforge.gameservice.repositories.BookRepository;
+import com.adventureforge.gameservice.repositories.EditionRepository;
+import com.adventureforge.gameservice.repositories.PublisherRepository;
+import com.adventureforge.gameservice.repositories.RolePlayingGameRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -9,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,7 +36,6 @@ public class DataLoader implements CommandLineRunner {
     private AuthorRepository authorRepository;
     private RolePlayingGameRepository rolePlayingGameRepository;
     private EditionRepository editionRepository;
-    private AuthorBookRepository authorBookRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -82,7 +93,7 @@ public class DataLoader implements CommandLineRunner {
                 .bookCollection(bookCollection1)
                 .publisher(publisher)
                 .isbn("2-915847-00-2")
-                .language("french")
+                .language(Locale.FRENCH)
                 .build();
 
         Book book1 = Book.builder()
@@ -92,7 +103,7 @@ public class DataLoader implements CommandLineRunner {
                 .bookCollection(bookCollection2)
                 .publisher(publisher)
                 .isbn("978-2-36328-252-1")
-                .language("french")
+                .language(Locale.CANADA_FRENCH)
                 .build();
 
         Book book2 = Book.builder()
@@ -102,40 +113,13 @@ public class DataLoader implements CommandLineRunner {
                 .bookCollection(bookCollection2)
                 .publisher(publisher)
                 .isbn("978-2-36328-254-5")
-                .language("french")
+                .language(Locale.FRENCH)
                 .build();
 
-        AuthorBook authorBook0 = AuthorBook.builder()
-                .author(author)
-                .book(book0)
-                .uuid(UUID.randomUUID())
-                .writer(true)
-                .illustrator(false)
-                .authorBookKey(new AuthorBookKey(book0.getId(), author.getId()))
-                .build();
-
-        AuthorBook authorBook1 = AuthorBook.builder()
-                .author(author)
-                .book(book1)
-                .uuid(UUID.randomUUID())
-                .writer(true)
-                .illustrator(false)
-                .authorBookKey(new AuthorBookKey(book1.getId(), author.getId()))
-                .build();
-
-        AuthorBook authorBook2 = AuthorBook.builder()
-                .author(author)
-                .book(book2)
-                .uuid(UUID.randomUUID())
-                .writer(true)
-                .illustrator(false)
-                .authorBookKey(new AuthorBookKey(book2.getId(), author.getId()))
-                .build();
-
-        author.setAuthorBooks(Set.of(authorBook0, authorBook1, authorBook2));
-        book0.setAuthorBooks(Set.of(authorBook0));
-        book1.setAuthorBooks(Set.of(authorBook1));
-        book2.setAuthorBooks(Set.of(authorBook2));
+        book0.setAuthors(Set.of(author));
+        book1.setAuthors(Set.of(author));
+        book2.setAuthors(Set.of(author));
+        author.setBooks(Set.of(book0, book1, book2));
 
         this.publisherRepository.save(publisher);
         this.rolePlayingGameRepository.save(rolePlayingGame);
@@ -147,9 +131,6 @@ public class DataLoader implements CommandLineRunner {
         this.bookRepository.save(book0);
         this.bookRepository.save(book1);
         this.bookRepository.save(book2);
-        this.authorBookRepository.save(authorBook0);
-        this.authorBookRepository.save(authorBook1);
-        this.authorBookRepository.save(authorBook2);
 
         log.info(author.getUuid().toString());
 

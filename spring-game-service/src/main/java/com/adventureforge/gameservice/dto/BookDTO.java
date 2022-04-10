@@ -1,9 +1,18 @@
 package com.adventureforge.gameservice.dto;
 
+import com.adventureforge.gameservice.entities.BookCollection;
+import com.adventureforge.gameservice.entities.Publisher;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.validator.constraints.ISBN;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,12 +24,17 @@ import java.util.UUID;
 @Builder
 public class BookDTO {
 
+    private Integer id;
+
     @JsonView(value = {View.External.GET.class, View.External.PUT.class})
     private UUID bookUuid;
 
+    @NotEmpty(message = "Book title must not be empty, size between 1 and 255")
+    @Size(min = 1, max = 255)
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String title;
 
+    @Size(min = 1, max = 510, message = "size between 1 and 510")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String subtitle;
 
@@ -30,27 +44,39 @@ public class BookDTO {
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String description;
 
+    @Size(min = 2, max = 10, message = "locale must be at least 2 characters long")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String language;
 
+    @ISBN
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String isbn;
 
-    @JsonView(value = {View.External.GET.class})
+    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private Set<UUID> authorsUuid;
 
-    @JsonView(value = {View.External.GET.class})
+    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private UUID publisherUuid;
 
-    @JsonView(value = {View.External.GET.class})
+    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private UUID collectionUuid;
 
-    @JsonView(value = {View.External.GET.class})
+    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private UUID rolePlayingGameUuid;
 
-    @JsonView(value = {View.External.GET.class})
+    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private UUID editionUuid;
 
-    @JsonView(value = {View.External.GET.class})
+    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String category;
+
+    private PublisherDTO publisherDTO;
+
+    private BookCollectionDTO bookCollectionDTO;
+
+    private Publisher publisher;
+
+    private BookCollection bookCollection;
+
+
 }

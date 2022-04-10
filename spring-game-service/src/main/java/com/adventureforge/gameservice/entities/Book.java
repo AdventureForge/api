@@ -14,10 +14,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Locale;
 import java.util.Set;
 
 @SuperBuilder
@@ -34,7 +36,7 @@ public class Book extends BaseEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(length = 512)
     private String subtitle;
 
     @Column
@@ -43,8 +45,8 @@ public class Book extends BaseEntity {
     @Lob
     private String description;
 
-    @Column
-    private String language;
+    @Column(length = 10)
+    private Locale language;
 
     @Column
     private String isbn;
@@ -63,8 +65,13 @@ public class Book extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BookCategory bookCategory;
 
-    @OneToMany(mappedBy = "book")
-    @JsonIgnoreProperties(value = "book")
+    @ManyToMany
+    @JoinTable(
+            name = "author_book",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    @JsonIgnoreProperties(value = "adventures")
     @ToString.Exclude
-    private Set<AuthorBook> authorBooks;
+    private Set<Author> authors;
 }

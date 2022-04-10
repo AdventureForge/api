@@ -1,6 +1,9 @@
 package com.adventureforge.gameservice.services;
 
+import com.adventureforge.gameservice.entities.Author;
 import com.adventureforge.gameservice.entities.Book;
+import com.adventureforge.gameservice.entities.BookCollection;
+import com.adventureforge.gameservice.entities.Publisher;
 import com.adventureforge.gameservice.exceptions.EntityNotFoundException;
 import com.adventureforge.gameservice.repositories.BookRepository;
 import lombok.AllArgsConstructor;
@@ -8,13 +11,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 public class BookService {
 
     private BookRepository bookRepository;
+    private PublisherService publisherService;
+    private BookCollectionService bookCollectionService;
+    private AuthorService authorService;
     private static final String UUID_PARAM = "uuid";
 
     public Page<Book> findAll(Pageable pageable) {
@@ -29,6 +37,22 @@ public class BookService {
     public Book create(Book book) {
         book.setUuid(UUID.randomUUID());
         return this.bookRepository.save(book);
+    }
+
+    public Book createBookWithDependencies(Book book) {
+
+        Publisher publisher = this.publisherService.findByUuid(book.getPublisher().getUuid());
+        BookCollection bookCollection = this.bookCollectionService.findByUuid(book.getBookCollection().getUuid());
+        Set<Author> authors = book.getAuthors()
+                .stream()
+                .map(author -> this.authorService.findByUuid(author.getUuid()))
+                .collect(Collectors.toSet());
+
+        book.setPublisher(publisher);
+        book.setBookCollection(bookCollection);
+        book.setAuthors(authors);
+
+        return this.create(book);
     }
 
     public Book update(UUID uuid, Book bookToUpdate) {
