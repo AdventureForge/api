@@ -27,11 +27,11 @@ public class AuthorDTO {
     private UUID uuid;
 
     @NotNull
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 255, message = "Firstname length must be between 1 and 255 characters")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String firstname;
 
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 255, message = "Lastname length must be between 1 and 255 characters")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String lastname;
 

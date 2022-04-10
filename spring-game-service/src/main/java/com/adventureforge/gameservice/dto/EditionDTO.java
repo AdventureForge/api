@@ -8,7 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,11 +26,13 @@ public class EditionDTO {
     @JsonView(value = {View.External.GET.class, View.External.PUT.class})
     private UUID uuid;
 
-    @NotNull
+    @NotEmpty
+    @Size(max = 1, message = "Edition number max value is 100")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private int editionNumber;
 
-    @NotNull
+    @NotEmpty(message = "Edition title must not be empty, size between 1 and 255")
+    @Size(min = 1, max = 255, message = "title must be between 1 and 255")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String editionTitle;
 

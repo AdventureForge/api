@@ -7,8 +7,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.URL;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,16 +27,24 @@ public class RolePlayingGameDTO {
     @JsonView(value = {View.External.GET.class, View.External.PUT.class})
     private UUID uuid;
 
+    @NotEmpty(message = "RolePlayingGame title must not be empty")
+    @Size(min = 1, max = 255, message = "title length must be between 1 and 255")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
-    @NotNull
     private String title;
 
+    @Size(min = 1, max = 255, message = "subtitle length must be between 1 and 255")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String subtitle;
+
+    @Size(min = 1, max = 65535, message = "url length must be between 1 and 65535")
+    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
+    private String description;
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String pictureUrl;
 
+    @URL
+    @Size(min = 1, max = 2048, message = "url max length is 2048 characters")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String websiteUrl;
 

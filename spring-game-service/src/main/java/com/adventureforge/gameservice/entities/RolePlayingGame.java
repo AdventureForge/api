@@ -32,6 +32,9 @@ public class RolePlayingGame extends BaseEntity {
     @Column
     private String subtitle;
 
+    @Column(length = 65535)
+    private String description;
+
     @Column
     private String pictureUrl;
 

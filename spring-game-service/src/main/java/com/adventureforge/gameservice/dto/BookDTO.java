@@ -22,6 +22,7 @@ import java.util.UUID;
 @Builder
 public class BookDTO {
 
+    @JsonView
     private Integer id;
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class})
@@ -39,6 +40,7 @@ public class BookDTO {
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String cover;
 
+    @Size(min = 1, max = 65535, message = "size between 1 and 65535")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String description;
 

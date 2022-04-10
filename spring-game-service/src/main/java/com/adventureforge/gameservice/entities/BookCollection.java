@@ -28,10 +28,10 @@ import java.util.Set;
 @AttributeOverride(name = "id", column = @Column(name = "collection_id"))
 public class BookCollection extends BaseEntity {
 
-    @Column()
+    @Column
     private String title;
 
-    @Column
+    @Column(length = 65535)
     private String description;
 
     @ManyToOne

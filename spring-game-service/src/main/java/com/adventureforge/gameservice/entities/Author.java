@@ -24,10 +24,10 @@ import java.util.Set;
 @AttributeOverride(name = "id", column = @Column(name = "author_id"))
 public class Author extends BaseEntity {
 
-    @Column()
+    @Column(length = 255)
     private String firstname;
 
-    @Column
+    @Column(length = 255)
     private String lastname;
 
     @ManyToMany(mappedBy = "authors")

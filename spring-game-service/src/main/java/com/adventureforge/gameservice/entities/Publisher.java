@@ -28,7 +28,7 @@ public class Publisher extends BaseEntity {
     @Column(length = 2048)
     private String websiteUrl;
 
-    @Column
+    @Column(length = 65535)
     private String description;
 
     @Column
