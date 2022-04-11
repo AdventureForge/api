@@ -32,7 +32,7 @@ import static com.adventureforge.gameservice.controllers.wrappers.ResponseWrappe
 @Tag(name = "Collections")
 @AllArgsConstructor
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/collections")
 public class BookCollectionController {
 
     private BookCollectionService bookCollectionService;
