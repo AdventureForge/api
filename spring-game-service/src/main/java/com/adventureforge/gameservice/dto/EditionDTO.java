@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.UUID;
@@ -29,6 +30,7 @@ public class EditionDTO {
     private UUID uuid;
 
     @NotEmpty
+    @Positive(message = "Edition number must be greater than zero")
     @Size(max = 1, message = "Edition number max value is 100")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private int editionNumber;
