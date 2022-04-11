@@ -21,6 +21,7 @@ import java.util.UUID;
 @Builder
 public class AuthorDTO {
 
+    @JsonView
     private Integer id;
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class})

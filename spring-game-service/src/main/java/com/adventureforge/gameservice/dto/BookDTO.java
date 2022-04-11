@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.ISBN;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.UUID;
@@ -26,7 +27,7 @@ public class BookDTO {
     private Integer id;
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class})
-    private UUID bookUuid;
+    private UUID uuid;
 
     @NotEmpty(message = "Book title must not be empty, size between 1 and 255")
     @Size(min = 1, max = 255)
@@ -52,21 +53,25 @@ public class BookDTO {
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String isbn;
 
+    @NotNull
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private Set<UUID> authorsUuid;
 
+    @NotNull
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private UUID publisherUuid;
 
+    @NotNull
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private UUID collectionUuid;
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
+    private String category;
+
+    @JsonView(value = {View.External.GET.class})
     private UUID rolePlayingGameUuid;
 
-    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
+    @JsonView(value = {View.External.GET.class})
     private UUID editionUuid;
 
-    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
-    private String category;
 }

@@ -12,6 +12,7 @@ public interface AuthorMapper {
 
     default AuthorDTO toDTO(Author author) {
         return AuthorDTO.builder()
+                .id(author.getId())
                 .uuid(author.getUuid())
                 .firstname(author.getFirstname())
                 .lastname(author.getLastname())

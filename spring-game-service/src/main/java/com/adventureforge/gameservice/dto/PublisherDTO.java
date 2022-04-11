@@ -22,6 +22,7 @@ import java.util.UUID;
 @Builder
 public class PublisherDTO {
 
+    @JsonView
     private Integer id;
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class})

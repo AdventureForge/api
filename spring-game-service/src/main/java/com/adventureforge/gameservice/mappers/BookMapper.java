@@ -19,7 +19,8 @@ public interface BookMapper {
 
     default BookDTO toDTO(Book book) {
         return BookDTO.builder()
-                .bookUuid(book.getUuid())
+                .id(book.getId())
+                .uuid(book.getUuid())
                 .title(book.getTitle())
                 .subtitle(book.getSubtitle())
                 .description(book.getDescription())
@@ -42,7 +43,7 @@ public interface BookMapper {
 
     default Book toEntity(BookDTO bookDTO) {
         return Book.builder()
-                .uuid(bookDTO.getBookUuid())
+                .uuid(bookDTO.getUuid())
                 .title(bookDTO.getTitle())
                 .cover(bookDTO.getCover())
                 .description(bookDTO.getDescription())

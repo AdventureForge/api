@@ -50,6 +50,9 @@ public class Book extends BaseEntity {
     @Column
     private String isbn;
 
+    @Enumerated(EnumType.STRING)
+    private BookCategory bookCategory;
+
     @ManyToOne
     @JoinColumn(name = "publisher_id", nullable = false)
     @JsonIgnoreProperties(value = "books")
@@ -60,9 +63,6 @@ public class Book extends BaseEntity {
     @JoinColumn(name = "collection_id", nullable = false)
     @JsonIgnoreProperties(value = "books")
     private BookCollection bookCollection;
-
-    @Enumerated(EnumType.STRING)
-    private BookCategory bookCategory;
 
     @ManyToMany
     @JoinTable(

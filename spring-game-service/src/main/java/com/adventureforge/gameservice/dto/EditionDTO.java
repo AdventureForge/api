@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.UUID;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @Builder
 public class EditionDTO {
 
+    @JsonView
     private Integer id;
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class})
@@ -36,8 +38,9 @@ public class EditionDTO {
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String editionTitle;
 
+    @NotNull
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
-    private String rolePlayingGameUuid;
+    private UUID rolePlayingGameUuid;
 
     @JsonView(value = {View.External.GET.class})
     private Set<UUID> collectionsUuids;
