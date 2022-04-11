@@ -46,5 +46,5 @@ public class PublisherDTO {
     private String logo;
 
     @JsonView(value = {View.External.GET.class})
-    private Set<UUID> booksUuids;
+    private Set<UUID> collectionsUuids;
 }

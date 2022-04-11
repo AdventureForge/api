@@ -17,7 +17,7 @@ public interface PublisherMapper {
                 .description(publisher.getDescription())
                 .websiteUrl(publisher.getWebsiteUrl())
                 .logo(publisher.getLogo())
-                .booksUuids(
+                .collectionsUuids(
                         publisher.getBookCollections() == null ?
                                 null :
                                 publisher.getBookCollections()

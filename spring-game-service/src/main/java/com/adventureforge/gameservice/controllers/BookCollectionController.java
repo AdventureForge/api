@@ -1,10 +1,10 @@
 package com.adventureforge.gameservice.controllers;
 
 import com.adventureforge.gameservice.controllers.wrappers.ResponseWrapper;
-import com.adventureforge.gameservice.dto.RolePlayingGameDTO;
+import com.adventureforge.gameservice.dto.BookCollectionDTO;
 import com.adventureforge.gameservice.dto.View;
-import com.adventureforge.gameservice.mappers.RolePlayingGameMapper;
-import com.adventureforge.gameservice.services.RolePlayingGameService;
+import com.adventureforge.gameservice.mappers.BookCollectionMapper;
+import com.adventureforge.gameservice.services.BookCollectionService;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -29,32 +29,32 @@ import java.util.UUID;
 import static com.adventureforge.gameservice.controllers.wrappers.ResponseWrapper.wrap;
 import static com.adventureforge.gameservice.controllers.wrappers.ResponseWrapper.wrapPageToList;
 
-@Tag(name = "RolePlayingGames")
+@Tag(name = "Collections")
 @AllArgsConstructor
 @RestController
-@RequestMapping("/roleplayinggames")
-public class RolePlayingGameController {
+@RequestMapping("/books")
+public class BookCollectionController {
 
-    private RolePlayingGameService rolePlayingGameService;
-    private RolePlayingGameMapper rolePlayingGameMapper;
+    private BookCollectionService bookCollectionService;
+    private BookCollectionMapper bookCollectionMapper;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
-    public ResponseWrapper<List<RolePlayingGameDTO>> findAll(@ParameterObject Pageable pageable) {
+    public ResponseWrapper<List<BookCollectionDTO>> findAll(@ParameterObject Pageable pageable) {
         return wrapPageToList(
-                this.rolePlayingGameService.findAllPaginated(pageable)
-                        .map(rolePlayingGameMapper::toDTO)
+                this.bookCollectionService.findAllPaginated(pageable)
+                        .map(bookCollectionMapper::toDTO)
         );
     }
 
     @GetMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
-    public ResponseWrapper<RolePlayingGameDTO> findByUuid(@PathVariable String uuid) {
+    public ResponseWrapper<BookCollectionDTO> findByUuid(@PathVariable String uuid) {
         return wrap(
-                this.rolePlayingGameMapper.toDTO(
-                        this.rolePlayingGameService.findByUuid(
+                this.bookCollectionMapper.toDTO(
+                        this.bookCollectionService.findByUuid(
                                 UUID.fromString(uuid)
                         )
                 )
@@ -64,12 +64,12 @@ public class RolePlayingGameController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @JsonView(View.External.GET.class)
-    public ResponseWrapper<RolePlayingGameDTO> create(
-            @RequestBody @Valid @JsonView(View.External.POST.class) RolePlayingGameDTO rolePlayingGameDTO) {
+    public ResponseWrapper<BookCollectionDTO> create(
+            @RequestBody @Valid @JsonView(View.External.POST.class) BookCollectionDTO bookCollectionDTO) {
         return wrap(
-                this.rolePlayingGameMapper.toDTO(
-                        this.rolePlayingGameService.create(
-                                this.rolePlayingGameMapper.toEntity(rolePlayingGameDTO)
+                this.bookCollectionMapper.toDTO(
+                        this.bookCollectionService.create(
+                                this.bookCollectionMapper.toEntity(bookCollectionDTO)
                         )
                 )
         );
@@ -78,14 +78,14 @@ public class RolePlayingGameController {
     @PutMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
-    public ResponseWrapper<RolePlayingGameDTO> update(
+    public ResponseWrapper<BookCollectionDTO> update(
             @PathVariable("uuid") String uuid,
-            @RequestBody @Valid @JsonView(View.External.PUT.class) RolePlayingGameDTO rolePlayingGameDTO) {
+            @RequestBody @Valid @JsonView(View.External.PUT.class) BookCollectionDTO bookCollectionDTO) {
         return wrap(
-                this.rolePlayingGameMapper.toDTO(
-                        this.rolePlayingGameService.update(
+                this.bookCollectionMapper.toDTO(
+                        this.bookCollectionService.update(
                                 UUID.fromString(uuid),
-                                this.rolePlayingGameMapper.toEntity(rolePlayingGameDTO)
+                                this.bookCollectionMapper.toEntity(bookCollectionDTO)
                         )
                 )
         );
@@ -94,6 +94,8 @@ public class RolePlayingGameController {
     @DeleteMapping(path = "/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("uuid") String uuid) {
-        this.rolePlayingGameService.deleteByUuid(UUID.fromString(uuid));
+        this.bookCollectionService.deleteByUuid(UUID.fromString(uuid));
     }
+
+
 }
