@@ -72,12 +72,14 @@ public class DataLoader implements CommandLineRunner {
                 .uuid(UUID.randomUUID())
                 .title(BookCollection.DEFAULT_COLLECTION)
                 .edition(edition1)
+                .publisher(publisher)
                 .build();
 
         BookCollection bookCollection2 = BookCollection.builder()
                 .uuid(UUID.randomUUID())
                 .title(BookCollection.DEFAULT_COLLECTION)
                 .edition(edition2)
+                .publisher(publisher)
                 .build();
 
         Author author = Author.builder()
@@ -91,7 +93,6 @@ public class DataLoader implements CommandLineRunner {
                 .title("La Révolte")
                 .bookCategory(BookCategory.CORE_RULEBOOK)
                 .bookCollection(bookCollection1)
-                .publisher(publisher)
                 .isbn("2-915847-00-2")
                 .language(Locale.FRENCH)
                 .build();
@@ -101,7 +102,6 @@ public class DataLoader implements CommandLineRunner {
                 .title("La Révolte")
                 .bookCategory(BookCategory.CORE_RULEBOOK)
                 .bookCollection(bookCollection2)
-                .publisher(publisher)
                 .isbn("978-2-36328-252-1")
                 .language(Locale.CANADA_FRENCH)
                 .build();
@@ -111,7 +111,6 @@ public class DataLoader implements CommandLineRunner {
                 .title("À Feu et à Sang")
                 .bookCategory(BookCategory.CORE_RULEBOOK)
                 .bookCollection(bookCollection2)
-                .publisher(publisher)
                 .isbn("978-2-36328-254-5")
                 .language(Locale.FRENCH)
                 .build();

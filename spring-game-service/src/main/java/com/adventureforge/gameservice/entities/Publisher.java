@@ -37,5 +37,5 @@ public class Publisher extends BaseEntity {
     @OneToMany(mappedBy = "publisher")
     @JsonIgnoreProperties(value = "publisher")
     @ToString.Exclude
-    private Set<Book> books;
+    private Set<BookCollection> bookCollections;
 }

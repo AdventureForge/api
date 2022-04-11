@@ -18,9 +18,9 @@ public interface PublisherMapper {
                 .websiteUrl(publisher.getWebsiteUrl())
                 .logo(publisher.getLogo())
                 .booksUuids(
-                        publisher.getBooks() == null ?
+                        publisher.getBookCollections() == null ?
                                 null :
-                                publisher.getBooks()
+                                publisher.getBookCollections()
                                         .stream()
                                         .map(BaseEntity::getUuid)
                                         .collect(Collectors.toSet()))

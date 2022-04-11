@@ -3,7 +3,6 @@ package com.adventureforge.gameservice.services;
 import com.adventureforge.gameservice.entities.Author;
 import com.adventureforge.gameservice.entities.Book;
 import com.adventureforge.gameservice.entities.BookCollection;
-import com.adventureforge.gameservice.entities.Publisher;
 import com.adventureforge.gameservice.exceptions.EntityNotFoundException;
 import com.adventureforge.gameservice.repositories.BookRepository;
 import lombok.AllArgsConstructor;
@@ -41,14 +40,11 @@ public class BookService {
 
     public Book createBookWithDependencies(Book book) {
 
-        Publisher publisher = this.publisherService.findByUuid(book.getPublisher().getUuid());
         BookCollection bookCollection = this.bookCollectionService.findByUuid(book.getBookCollection().getUuid());
         Set<Author> authors = book.getAuthors()
                 .stream()
                 .map(author -> this.authorService.findByUuid(author.getUuid()))
                 .collect(Collectors.toSet());
-
-        book.setPublisher(publisher);
         book.setBookCollection(bookCollection);
         book.setAuthors(authors);
 

@@ -41,6 +41,10 @@ public class BookCollectionDTO {
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private UUID editionUuid;
 
+    @NotNull
+    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
+    private UUID publisherUuid;
+
     @JsonView(value = {View.External.GET.class})
     private Set<UUID> booksUuids;
 }

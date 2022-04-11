@@ -20,7 +20,7 @@ import java.util.UUID;
 @Setter
 @Builder
 public class AuthorDTO {
-
+    @Schema()
     @JsonView
     private Integer id;
 

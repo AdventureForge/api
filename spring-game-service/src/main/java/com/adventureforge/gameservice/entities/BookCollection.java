@@ -39,6 +39,12 @@ public class BookCollection extends BaseEntity {
     @JsonIgnoreProperties(value = "bookCollections")
     private Edition edition;
 
+    @ManyToOne
+    @JoinColumn(name = "publisher_id", nullable = false)
+    @JsonIgnoreProperties(value = "bookCollections")
+    @ToString.Exclude
+    private Publisher publisher;
+
     @OneToMany(mappedBy = "bookCollection")
     @JsonIgnoreProperties(value = "bookCollection")
     @ToString.Exclude

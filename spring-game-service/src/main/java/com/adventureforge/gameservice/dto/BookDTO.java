@@ -59,14 +59,14 @@ public class BookDTO {
 
     @NotNull
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
-    private UUID publisherUuid;
-
-    @NotNull
-    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private UUID collectionUuid;
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String category;
+
+
+    @JsonView(value = {View.External.GET.class})
+    private UUID publisherUuid;
 
     @JsonView(value = {View.External.GET.class})
     private UUID rolePlayingGameUuid;

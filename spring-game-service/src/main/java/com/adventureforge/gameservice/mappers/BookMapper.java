@@ -6,7 +6,6 @@ import com.adventureforge.gameservice.entities.BaseEntity;
 import com.adventureforge.gameservice.entities.Book;
 import com.adventureforge.gameservice.entities.BookCategory;
 import com.adventureforge.gameservice.entities.BookCollection;
-import com.adventureforge.gameservice.entities.Publisher;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -34,7 +33,7 @@ public interface BookMapper {
                                         .map(BaseEntity::getUuid)
                                         .collect(Collectors.toSet()))
                 .collectionUuid(book.getBookCollection().getUuid())
-                .publisherUuid(book.getPublisher().getUuid())
+                .publisherUuid(book.getBookCollection().getPublisher().getUuid())
                 .rolePlayingGameUuid(book.getBookCollection().getEdition().getRolePlayingGame().getUuid())
                 .editionUuid(book.getBookCollection().getEdition().getUuid())
                 .category(book.getBookCategory().name())
@@ -49,7 +48,6 @@ public interface BookMapper {
                 .description(bookDTO.getDescription())
                 .language(LOCALE_MAPPER_INSTANCE.stringToLocale(bookDTO.getLanguage()))
                 .isbn(bookDTO.getIsbn())
-                .publisher(Publisher.builder().uuid(bookDTO.getPublisherUuid()).build())
                 .bookCollection(BookCollection.builder().uuid(bookDTO.getCollectionUuid()).build())
                 .bookCategory(BookCategory.valueOf(bookDTO.getCategory()))
                 .authors(bookDTO.getAuthorsUuid()
