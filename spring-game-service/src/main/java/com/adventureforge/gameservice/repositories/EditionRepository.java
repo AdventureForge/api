@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface EditionRepository extends JpaRepository<Edition, Integer> {
 
     Optional<Edition> findByUuid(UUID uuid);
+
+    boolean existsByUuid(UUID uuid);
 }

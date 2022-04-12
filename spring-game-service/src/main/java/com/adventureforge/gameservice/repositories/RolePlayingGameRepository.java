@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface RolePlayingGameRepository extends JpaRepository<RolePlayingGame, Integer> {
 
     Optional<RolePlayingGame> findByUuid(UUID uuid);
+
+    boolean existsByUuid(UUID uuid);
 }

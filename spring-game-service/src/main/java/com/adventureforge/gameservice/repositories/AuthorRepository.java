@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface AuthorRepository extends JpaRepository<Author, Integer> {
 
     Optional<Author> findByUuid(UUID uuid);
+
+    boolean existsByUuid(UUID uuid);
 }

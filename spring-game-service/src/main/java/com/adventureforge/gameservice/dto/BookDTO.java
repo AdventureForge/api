@@ -49,18 +49,20 @@ public class BookDTO {
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String language;
 
+    @NotEmpty(message = "a valid isbn is required")
     @ISBN
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String isbn;
 
-    @NotNull
+    @NotNull(message = "authors associated to this book are required")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private Set<UUID> authorsUuid;
 
-    @NotNull
+    @NotNull(message = "A book must be put in a collection")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private UUID collectionUuid;
 
+    @NotEmpty(message = "A book category is required")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String category;
 
