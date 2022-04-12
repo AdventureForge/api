@@ -1,19 +1,42 @@
 server:
   port: 9001
+  shutdown: graceful
   tomcat:
     connection-timeout: 2s
     keep-alive-timeout: 15s
     threads:
       max: 50
       min-spare: 5
+
+logging:
+  level: debug
+
 spring:
+  application:
+    name: game-service
+  profiles:
+    active: default
   datasource:
-    url: jdbc:h2:mem:mydb
-    username: admin
-    password: admin
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/gameservicedb
+    username: postgres
+    password: postgres
+    hikari:
+      connection-timeout: 2000 #ms
+      maximum-pool-size: 5
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform:
+    properties:
+      javax:
+        persistence:
+          schema-generation:
+            scripts:
+              action: create
+              create-target: create.sql
+              create-source: metadata
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: update
+    show-sql: true
   jackson:
     default-property-inclusion: non_null
   h2:
@@ -23,3 +46,7 @@ spring:
       settings:
         trace: false
         web-allow-others: false
+
+gameservice:
+  testdata:
+    enabled: true

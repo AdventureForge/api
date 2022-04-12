@@ -15,7 +15,9 @@ import com.adventureforge.gameservice.repositories.PublisherRepository;
 import com.adventureforge.gameservice.repositories.RolePlayingGameRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -26,19 +28,20 @@ import java.util.UUID;
 
 @Slf4j
 @Transactional
+@ConditionalOnProperty(name = "gameservice.testdata.enabled", havingValue = "true")
 @Component
 @AllArgsConstructor
-public class DataLoader implements CommandLineRunner {
+public class DataLoader {
 
-    private PublisherRepository publisherRepository;
-    private BookRepository bookRepository;
-    private BookCollectionRepository bookCollectionRepository;
-    private AuthorRepository authorRepository;
-    private RolePlayingGameRepository rolePlayingGameRepository;
-    private EditionRepository editionRepository;
+    private final PublisherRepository publisherRepository;
+    private final BookRepository bookRepository;
+    private final BookCollectionRepository bookCollectionRepository;
+    private final AuthorRepository authorRepository;
+    private final RolePlayingGameRepository rolePlayingGameRepository;
+    private final EditionRepository editionRepository;
 
-    @Override
-    public void run(String... args) throws Exception {
+    @EventListener(ApplicationReadyEvent.class)
+    public void loadTestData() {
 
         Publisher publisher = Publisher.builder()
                 .uuid(UUID.randomUUID())
