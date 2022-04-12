@@ -8,16 +8,13 @@ server:
       max: 50
       min-spare: 5
 
-logging:
-  level: debug
-
 spring:
   application:
     name: game-service
   profiles:
     active: default
   datasource:
-    url: jdbc:postgresql://localhost:5432/gameservicedb
+    url: jdbc:postgresql://localhost:5432/adventureforgedb_games
     username: postgres
     password: postgres
     hikari:
@@ -26,26 +23,12 @@ spring:
   jpa:
     database-platform:
     properties:
-      javax:
-        persistence:
-          schema-generation:
-            scripts:
-              action: create
-              create-target: create.sql
-              create-source: metadata
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         ddl-auto: update
     show-sql: true
   jackson:
     default-property-inclusion: non_null
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        trace: false
-        web-allow-others: false
 
 gameservice:
   testdata:

@@ -35,7 +35,7 @@ public class BookCollection extends BaseEntity {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "edition_id")
     @JsonIgnoreProperties(value = "bookCollections")
     private Edition edition;
 

@@ -123,15 +123,25 @@ public class DataLoader {
         book2.setAuthors(Set.of(author));
         author.setBooks(Set.of(book0, book1, book2));
 
+        log.info("INSERT PUBLISHER");
         this.publisherRepository.save(publisher);
+        log.info("INSERT RPG");
         this.rolePlayingGameRepository.save(rolePlayingGame);
+        log.info("INSERT ED1");
         this.editionRepository.save(edition1);
+        log.info("INSERT ED2");
         this.editionRepository.save(edition2);
+        log.info("INSERT COLL1");
         this.bookCollectionRepository.save(bookCollection1);
+        log.info("INSERT COLL2");
         this.bookCollectionRepository.save(bookCollection2);
+        log.info("INSERT AUTHOR");
         this.authorRepository.save(author);
+        log.info("INSERT BK0");
         this.bookRepository.save(book0);
+        log.info("INSERT BK1");
         this.bookRepository.save(book1);
+        log.info("INSERT BK2");
         this.bookRepository.save(book2);
 
         log.info(author.getUuid().toString());

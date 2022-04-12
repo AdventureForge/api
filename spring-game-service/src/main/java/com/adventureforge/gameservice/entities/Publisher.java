@@ -8,9 +8,11 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
 @SuperBuilder
@@ -20,6 +22,8 @@ import java.util.Set;
 @Setter
 @ToString
 @Entity
+@Table(name = "publishers")
+@AttributeOverride(name = "id", column = @Column(name = "publisher_id"))
 public class Publisher extends BaseEntity {
 
     @Column

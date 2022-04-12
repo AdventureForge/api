@@ -12,6 +12,7 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
 @SuperBuilder
@@ -21,13 +22,14 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(callSuper = true)
+@Table(name = "authors")
 @AttributeOverride(name = "id", column = @Column(name = "author_id"))
 public class Author extends BaseEntity {
 
-    @Column(length = 255)
+    @Column
     private String firstname;
 
-    @Column(length = 255)
+    @Column
     private String lastname;
 
     @ManyToMany(mappedBy = "authors")
