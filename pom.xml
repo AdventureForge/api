@@ -17,6 +17,9 @@
     <modules>
         <module>spring-game-service</module>
         <module>spring-adventure-service</module>
+        <module>spring-config-server</module>
+        <module>spring-eureka-server</module>
+        <module>spring-gateway-server</module>
     </modules>
 
 </project>
