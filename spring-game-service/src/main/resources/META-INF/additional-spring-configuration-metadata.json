@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "gameservice.testdata.enabled",
+      "type": "java.lang.String",
+      "description": "Description for gameservice.testdata.enabled."
+    }
+  ]
+}
