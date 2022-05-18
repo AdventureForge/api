@@ -11,6 +11,10 @@ server:
 spring:
   application:
     name: adventure-service
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
   datasource:
     url: jdbc:postgresql://localhost:5432/adventureforgedb
     username: postgres
@@ -19,7 +23,8 @@ spring:
       connection-timeout: 2000 #ms
       maximum-pool-size: 5
   jpa:
-    database-platform:
+    database: POSTGRESQL
+    platform: postgres
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -35,7 +40,7 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://localhost:8889/eureka/
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
 
 info:
   system: Adventure Forge - adventure service

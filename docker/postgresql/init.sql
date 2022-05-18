@@ -1,2 +1,1 @@
-CREATE DATABASE adventureforgedb_games;
-CREATE DATABASE adventureforgedb_adventures;
+CREATE DATABASE adventureforgedb;

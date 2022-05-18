@@ -11,6 +11,10 @@ server:
 spring:
   application:
     name: game-service
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
   datasource:
     url: jdbc:postgresql://localhost:5432/adventureforgedb
     username: postgres
@@ -19,7 +23,8 @@ spring:
       connection-timeout: 2000 #ms
       maximum-pool-size: 5
   jpa:
-    database-platform:
+    database: POSTGRESQL
+    platform: postgres
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -35,7 +40,7 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://localhost:8889/eureka/
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
 
 info:
   system: Adventure Forge - game service
@@ -61,3 +66,51 @@ management:
 gameservice:
   testdata:
     enabled: true
+
+resilience4j.circuitbreaker:
+  instances:
+    adventureService:
+      registerHealthIndicator: true
+      ringBufferSizeInClosedState: 5
+      ringBufferSizeInHalfOpenState: 3
+      waitDurationInOpenState: 10s
+      failureRateThreshold: 50
+      recordExceptions:
+        - org.springframework.web.client.HttpServerErrorException
+        - java.io.IOException
+        - java.util.concurrent.TimeoutException
+        - org.springframework.web.client.ResourceAccessException
+    gameService:
+      registerHealthIndicator: true
+      ringBufferSizeInClosedState: 6
+      ringBufferSizeInHalfOpenState: 4
+      waitDurationInOpenState: 20s
+      failureRateThreshold: 60
+
+resilience4j.ratelimiter:
+  instances:
+    licenseService:
+      limitForPeriod: 5
+      limitRefreshPeriod: 5000
+      timeoutDuration: 1000ms
+
+resilience4j.retry:
+  instances:
+    retryLicenseService:
+      maxRetryAttempts: 5
+      waitDuration: 10000
+      retry-exceptions:
+        - java.util.concurrent.TimeoutException
+
+resilience4j.bulkhead:
+  instances:
+    bulkheadLicenseService:
+      maxWaitDuration: 2ms
+      maxConcurrentCalls: 20
+
+resilience4j.thread-pool-bulkhead:
+  instances:
+    bulkheadLicenseService:
+      maxThreadPoolSize: 1
+      coreThreadPoolSize: 1
+      queueCapacity: 1
