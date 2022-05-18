@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: adventure-service
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+  cloud:
+    config:
+      enabled: true # When using Config Service, set to true
+      uri: http://localhost:8888
+      request-connect-timeout: 5000 # 5s
+      request-read-timeout: 5000 # 5s
+      fail-fast: false # In production, set to true
+      retry:
+        max-attempts: 6
+        initial-interval: 1000 # 1s
+        max-interval: 2000 # 2s
+        multiplier: 1.1
+  config:
+    import: 'optional:configserver:'
