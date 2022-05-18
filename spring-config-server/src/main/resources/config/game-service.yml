@@ -65,7 +65,7 @@ management:
 
 gameservice:
   testdata:
-    enabled: true
+    enabled: false
 
 resilience4j.circuitbreaker:
   instances:

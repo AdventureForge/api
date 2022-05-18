@@ -10,14 +10,11 @@ public class UserContextHolder {
 
     public static UserContext getContext() {
         UserContext context = userContext.get();
-
         if (context == null) {
             context = createEmptyContext();
             userContext.set(context);
-            return userContext.get();
         }
-        throw new RuntimeException("No context found");
-
+        return userContext.get();
     }
 
     public static void setContext(UserContext context) {
