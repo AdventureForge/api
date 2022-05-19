@@ -111,13 +111,6 @@
                         <name>${docker.image.prefix}/${project.artifactId}:${project.version}</name>
                     </image>
                 </configuration>
-                <!--                <executions>
-                                    <execution>
-                                        <goals>
-                                            <goal>build-image</goal>
-                                        </goals>
-                                    </execution>
-                                </executions>-->
             </plugin>
         </plugins>
     </build>
