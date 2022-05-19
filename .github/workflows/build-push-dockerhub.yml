@@ -58,16 +58,7 @@ jobs:
         uses: tj-actions/changed-files@v20
         with:
           path: spring-adventure-service
-          
-      - name: Run step if any of the listed files above change
-        if: steps.changed-dir-adventure-service.outputs.any_changed == 'true'
-        run: |
-          echo "One or more files listed above has changed."
-          
-      - name: Run step if any of the listed files above change
-        if: steps.changed-files-specific.outputs.any_changed == 'false'
-        run: |
-          echo "No files listed above has changed."
+        
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -83,15 +74,18 @@ jobs:
           cache: maven
       - 
         name: Build module with Maven
+        if: steps.changed-dir-adventure-service.outputs.any_changed == 'true'
         run: mvn -B package --file pom.xml
       -
         name: Login to DockerHub
+        if: steps.changed-dir-adventure-service.outputs.any_changed == 'true'
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Get module version
+        if: steps.changed-dir-adventure-service.outputs.any_changed == 'true'
         run: |
           export ADVENTURESERVICE_VERSION=$(mvn -q \
           -Dexec.executable=echo \
@@ -101,6 +95,7 @@ jobs:
           echo "ADVENTURESERVICE_VERSION=$ADVENTURESERVICE_VERSION" >> $GITHUB_ENV
       -
         name: Build and push Docker image
+        if: steps.changed-dir-adventure-service.outputs.any_changed == 'true'
         uses: docker/build-push-action@v3
         with:
           context: ./spring-adventure-service
