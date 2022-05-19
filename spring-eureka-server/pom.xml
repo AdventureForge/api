@@ -20,6 +20,8 @@
         <java.version>17</java.version>
         <docker.image.prefix>morganlmd</docker.image.prefix>
         <spring-cloud.version>2021.0.1</spring-cloud.version>
+        <sonar.organization>adventureforge</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <dependencies>
@@ -89,13 +91,13 @@
                         <name>${docker.image.prefix}/${project.artifactId}:${project.version}</name>
                     </image>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>build-image</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <!--                <executions>
+                                    <execution>
+                                        <goals>
+                                            <goal>build-image</goal>
+                                        </goals>
+                                    </execution>
+                                </executions>-->
             </plugin>
         </plugins>
     </build>
