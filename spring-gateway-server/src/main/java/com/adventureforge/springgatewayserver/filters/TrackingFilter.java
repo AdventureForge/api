@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @Slf4j
 @AllArgsConstructor
 @Order(1)
@@ -47,9 +49,10 @@ public class TrackingFilter implements GlobalFilter {
 
     private String getUsername(HttpHeaders requestHeaders) {
         String username = "";
-        if (filterUtils.getAuthToken(requestHeaders).isPresent()) {
-            String authToken = filterUtils.getAuthToken(requestHeaders).get().replace("Bearer ", "");
-            JSONObject jsonObj = decodeJWT(authToken);
+        Optional<String> authToken = filterUtils.getAuthToken(requestHeaders);
+        if (authToken.isPresent()) {
+            String token = authToken.get().replace("Bearer ", "");
+            JSONObject jsonObj = decodeJWT(token);
             try {
                 username = jsonObj.getString("preferred_username");
             } catch (Exception e) {
