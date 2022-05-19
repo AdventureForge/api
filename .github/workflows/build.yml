@@ -84,7 +84,7 @@ jobs:
         name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          constext: spring-adventure-service
+          context: spring-adventure-service
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.ADVENTURESERVICE_VERSION }}
