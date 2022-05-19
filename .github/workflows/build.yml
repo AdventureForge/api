@@ -74,11 +74,12 @@ jobs:
       -
         name: Get module version
         run: |
-          EXPORT ADVENTURESERVICE_VERSION=$(mvn -q \
+          export ADVENTURESERVICE_VERSION=$(mvn -q \
           -Dexec.executable=echo \
           -Dexec.args='${project.version}' \
           --non-recursive \
           exec:exec)
+          echo "::set-env name=ADVENTURESERVICE_VERSION::$ADVENTURESERVICE_VERSION"
       -
         name: Build and push Docker image
         uses: docker/build-push-action@v3
