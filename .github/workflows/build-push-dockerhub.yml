@@ -16,25 +16,49 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Check if service folder changed
+        id: services_changed
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            dir1:
+              - 'spring-adventure-service/**'
+            dir2:
+              - 'spring-config-server/**'
+            dir3:
+              - 'spring-eureka-server/**'
+            dir4:
+              - 'spring-game-service/**'
+            dir5:
+              - 'spring-gateway-server/**'
+
       - name: Set up JDK 17
+        if: ${{ steps.services_changed.output.dir1 == 'true' || steps.services_changed.output.dir2 == 'true' ||steps.services_changed.output.dir3 == 'true' || steps.services_changed.output.dir4 == 'true' || steps.services_changed.output.dir5 == 'true' }}
         uses: actions/setup-java@v3
         with:
           java-version: 17
           distribution: 'temurin'
           cache: maven
+
       - name: Cache SonarCloud packages
+        if: ${{ steps.services_changed.output.dir1 == 'true' || steps.services_changed.output.dir2 == 'true' ||steps.services_changed.output.dir3 == 'true' || steps.services_changed.output.dir4 == 'true' || steps.services_changed.output.dir5 == 'true' }}
         uses: actions/cache@v1
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
       - name: Cache Maven packages
+        if: ${{ steps.services_changed.output.dir1 == 'true' || steps.services_changed.output.dir2 == 'true' ||steps.services_changed.output.dir3 == 'true' || steps.services_changed.output.dir4 == 'true' || steps.services_changed.output.dir5 == 'true' }}
         uses: actions/cache@v1
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+
       - name: Build and analyze
+        if: ${{ steps.services_changed.output.dir1 == 'true' || steps.services_changed.output.dir2 == 'true' ||steps.services_changed.output.dir3 == 'true' || steps.services_changed.output.dir4 == 'true' || steps.services_changed.output.dir5 == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -46,9 +70,10 @@ jobs:
     needs: [ sonarcloud-analysis ]
     env:
       IMAGE_NAME: adventureforge-adventureservice
+      SERVICE_DIRECTORY: spring-adventure-service
     defaults:
       run:
-        working-directory: spring-adventure-service
+        working-directory: ${{ env.SERVICE_DIRECTORY }}
     steps:
       - name: checkout main
         uses: actions/checkout@v3
@@ -61,7 +86,7 @@ jobs:
         with:
           filters: |
             dir:
-              - 'spring-adventure-service/**'
+              - '${{ env.SERVICE_DIRECTORY }}/**'
 
       - name: Set up QEMU
         if: steps.service_changed.outputs.dir == 'true'
@@ -93,21 +118,21 @@ jobs:
       - name: Get module version
         if: steps.service_changed.outputs.dir == 'true'
         run: |
-          export ADVENTURESERVICE_VERSION=$(mvn -q \
+          export SERVICE_VERSION=$(mvn -q \
           -Dexec.executable=echo \
           -Dexec.args='${project.version}' \
           --non-recursive \
           exec:exec)
-          echo "ADVENTURESERVICE_VERSION=$ADVENTURESERVICE_VERSION" >> $GITHUB_ENV
+          echo "SERVICE_VERSION=$SERVICE_VERSION" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         if: steps.service_changed.outputs.dir == 'true'
         uses: docker/build-push-action@v3
         with:
-          context: ./spring-adventure-service
+          context: ./${{ env.SERVICE_DIRECTORY }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.ADVENTURESERVICE_VERSION }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.SERVICE_VERSION }}
           push: true
 
 
@@ -116,20 +141,34 @@ jobs:
     needs: [ sonarcloud-analysis ]
     env:
       IMAGE_NAME: adventureforge-configserver
+      SERVICE_DIRECTORY: spring-config-server
     defaults:
       run:
-        working-directory: spring-config-server
+        working-directory: ${{ env.SERVICE_DIRECTORY }}
     steps:
       - name: checkout main
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check if service folder changed
+        id: service_changed
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            dir:
+              - '${{ env.SERVICE_DIRECTORY }}/**'
 
       - name: Set up QEMU
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/setup-buildx-action@v2
 
       - name: Set up JDK 17
+        if: steps.service_changed.outputs.dir == 'true'
         uses: actions/setup-java@v3
         with:
           java-version: '17'
@@ -137,30 +176,34 @@ jobs:
           cache: maven
 
       - name: Build module with Maven
+        if: steps.service_changed.outputs.dir == 'true'
         run: mvn -B package --file pom.xml
 
       - name: Login to DockerHub
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Get module version
+        if: steps.service_changed.outputs.dir == 'true'
         run: |
-          export CONFIGSERVER_VERSION=$(mvn -q \
+          export SERVICE_VERSION=$(mvn -q \
           -Dexec.executable=echo \
           -Dexec.args='${project.version}' \
           --non-recursive \
           exec:exec)
-          echo "CONFIGSERVER_VERSION=$CONFIGSERVER_VERSION" >> $GITHUB_ENV
+          echo "SERVICE_VERSION=$SERVICE_VERSION" >> $GITHUB_ENV
 
       - name: Build and push Docker image
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/build-push-action@v3
         with:
-          context: ./spring-config-server
+          context: ./${{ env.SERVICE_DIRECTORY }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.CONFIGSERVER_VERSION }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.SERVICE_VERSION }}
           push: true
 
 
@@ -169,20 +212,34 @@ jobs:
     needs: [ sonarcloud-analysis ]
     env:
       IMAGE_NAME: adventureforge-eurekaserver
+      SERVICE_DIRECTORY: spring-eureka-server
     defaults:
       run:
-        working-directory: spring-eureka-server
+        working-directory: ${{ env.SERVICE_DIRECTORY }}
     steps:
       - name: checkout main
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check if service folder changed
+        id: service_changed
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            dir:
+              - '${{ env.SERVICE_DIRECTORY }}/**'
 
       - name: Set up QEMU
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/setup-buildx-action@v2
 
       - name: Set up JDK 17
+        if: steps.service_changed.outputs.dir == 'true'
         uses: actions/setup-java@v3
         with:
           java-version: '17'
@@ -190,29 +247,34 @@ jobs:
           cache: maven
 
       - name: Build module with Maven
+        if: steps.service_changed.outputs.dir == 'true'
         run: mvn -B package --file pom.xml
+
       - name: Login to DockerHub
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Get module version
+        if: steps.service_changed.outputs.dir == 'true'
         run: |
-          export EUREKASERVER_VERSION=$(mvn -q \
+          export SERVICE_VERSION=$(mvn -q \
           -Dexec.executable=echo \
           -Dexec.args='${project.version}' \
           --non-recursive \
           exec:exec)
-          echo "EUREKASERVER_VERSION=$EUREKASERVER_VERSION" >> $GITHUB_ENV
+          echo "SERVICE_VERSION=$SERVICE_VERSION" >> $GITHUB_ENV
 
       - name: Build and push Docker image
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/build-push-action@v3
         with:
-          context: ./spring-eureka-server
+          context: ./${{ env.SERVICE_DIRECTORY }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.EUREKASERVER_VERSION }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.SERVICE_VERSION }}
           push: true
 
 
@@ -221,20 +283,34 @@ jobs:
     needs: [ sonarcloud-analysis ]
     env:
       IMAGE_NAME: adventureforge-gameservice
+      SERVICE_DIRECTORY: spring-game-service
     defaults:
       run:
-        working-directory: spring-game-service
+        working-directory: ${{ env.SERVICE_DIRECTORY }}
     steps:
       - name: checkout main
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check if service folder changed
+        id: service_changed
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            dir:
+              - '${{ env.SERVICE_DIRECTORY }}/**'
 
       - name: Set up QEMU
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/setup-buildx-action@v2
 
       - name: Set up JDK 17
+        if: steps.service_changed.outputs.dir == 'true'
         uses: actions/setup-java@v3
         with:
           java-version: '17'
@@ -242,30 +318,34 @@ jobs:
           cache: maven
 
       - name: Build module with Maven
+        if: steps.service_changed.outputs.dir == 'true'
         run: mvn -B package --file pom.xml
 
       - name: Login to DockerHub
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Get module version
+        if: steps.service_changed.outputs.dir == 'true'
         run: |
-          export GAMESERVICE_VERSION=$(mvn -q \
+          export SERVICE_VERSION=$(mvn -q \
           -Dexec.executable=echo \
           -Dexec.args='${project.version}' \
           --non-recursive \
           exec:exec)
-          echo "GAMESERVICE_VERSION=$GAMESERVICE_VERSION" >> $GITHUB_ENV
+          echo "SERVICE_VERSION=$SERVICE_VERSION" >> $GITHUB_ENV
 
       - name: Build and push Docker image
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/build-push-action@v3
         with:
-          context: ./spring-game-service
+          context: ./${{ env.SERVICE_DIRECTORY }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.GAMESERVICE_VERSION }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.SERVICE_VERSION }}
           push: true
 
 
@@ -274,20 +354,34 @@ jobs:
     needs: [ sonarcloud-analysis ]
     env:
       IMAGE_NAME: adventureforge-gatewayserver
+      SERVICE_DIRECTORY: spring-gateway-server
     defaults:
       run:
-        working-directory: spring-gateway-server
+        working-directory: ${{ env.SERVICE_DIRECTORY }}
     steps:
       - name: checkout main
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check if service folder changed
+        id: service_changed
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            dir:
+              - '${{ env.SERVICE_DIRECTORY }}/**'
 
       - name: Set up QEMU
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/setup-buildx-action@v2
 
       - name: Set up JDK 17
+        if: steps.service_changed.outputs.dir == 'true'
         uses: actions/setup-java@v3
         with:
           java-version: '17'
@@ -295,30 +389,34 @@ jobs:
           cache: maven
 
       - name: Build module with Maven
+        if: steps.service_changed.outputs.dir == 'true'
         run: mvn -B package --file pom.xml
 
       - name: Login to DockerHub
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Get module version
+        if: steps.service_changed.outputs.dir == 'true'
         run: |
-          export GATEWAYSERVER_VERSION=$(mvn -q \
+          export SERVICE_VERSION=$(mvn -q \
           -Dexec.executable=echo \
           -Dexec.args='${project.version}' \
           --non-recursive \
           exec:exec)
-          echo "GATEWAYSERVER_VERSION=$GATEWAYSERVER_VERSION" >> $GITHUB_ENV
+          echo "SERVICE_VERSION=$SERVICE_VERSION" >> $GITHUB_ENV
 
       - name: Build and push Docker image
+        if: steps.service_changed.outputs.dir == 'true'
         uses: docker/build-push-action@v3
         with:
-          context: ./spring-gateway-server
+          context: ./${{ env.SERVICE_DIRECTORY }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.GATEWAYSERVER_VERSION }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.SERVICE_VERSION }}
           push: true
 
 
