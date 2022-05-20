@@ -12,6 +12,8 @@ jobs:
   # Sonarcloud job to analyse the full project
   sonarcloud-analysis:
     runs-on: ubuntu-latest
+    outputs:
+      perform-deployment: ${{ steps.evaluate-need-for-deployment.outputs.deploy }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -32,6 +34,16 @@ jobs:
               - 'spring-game-service/**'
             dir5:
               - 'spring-gateway-server/**'
+
+      - id: evaluate-need-for-deployment
+        name: Evaluate need for deployment
+        run: |
+          if [[ ${{ steps.services_changed.outputs.dir1 == 'true' || steps.services_changed.outputs.dir2 == 'true' ||steps.services_changed.outputs.dir3 == 'true' || steps.services_changed.outputs.dir4 == 'true' || steps.services_changed.outputs.dir5 == 'true' }} ]]
+          then
+            echo "::set-output name=deploy::true"
+          else
+            echo "::set-output name=deploy::false"
+          fi
 
       - name: Set up JDK 17
         if: steps.services_changed.outputs.dir1 == 'true' || steps.services_changed.outputs.dir2 == 'true' ||steps.services_changed.outputs.dir3 == 'true' || steps.services_changed.outputs.dir4 == 'true' || steps.services_changed.outputs.dir5 == 'true'
