@@ -34,7 +34,7 @@ jobs:
               - 'spring-gateway-server/**'
 
       - name: Set up JDK 17
-        if: ${{ steps.services_changed.output.dir1 == 'true' || steps.services_changed.output.dir2 == 'true' ||steps.services_changed.output.dir3 == 'true' || steps.services_changed.output.dir4 == 'true' || steps.services_changed.output.dir5 == 'true' }}
+        if: steps.services_changed.output.dir1 == 'true' || steps.services_changed.output.dir2 == 'true' ||steps.services_changed.output.dir3 == 'true' || steps.services_changed.output.dir4 == 'true' || steps.services_changed.output.dir5 == 'true'
         uses: actions/setup-java@v3
         with:
           java-version: 17
@@ -42,7 +42,7 @@ jobs:
           cache: maven
 
       - name: Cache SonarCloud packages
-        if: ${{ steps.services_changed.output.dir1 == 'true' || steps.services_changed.output.dir2 == 'true' ||steps.services_changed.output.dir3 == 'true' || steps.services_changed.output.dir4 == 'true' || steps.services_changed.output.dir5 == 'true' }}
+        if: steps.services_changed.output.dir1 == 'true' || steps.services_changed.output.dir2 == 'true' ||steps.services_changed.output.dir3 == 'true' || steps.services_changed.output.dir4 == 'true' || steps.services_changed.output.dir5 == 'true'
         uses: actions/cache@v1
         with:
           path: ~/.sonar/cache
@@ -50,7 +50,7 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Cache Maven packages
-        if: ${{ steps.services_changed.output.dir1 == 'true' || steps.services_changed.output.dir2 == 'true' ||steps.services_changed.output.dir3 == 'true' || steps.services_changed.output.dir4 == 'true' || steps.services_changed.output.dir5 == 'true' }}
+        if: steps.services_changed.output.dir1 == 'true' || steps.services_changed.output.dir2 == 'true' ||steps.services_changed.output.dir3 == 'true' || steps.services_changed.output.dir4 == 'true' || steps.services_changed.output.dir5 == 'true'
         uses: actions/cache@v1
         with:
           path: ~/.m2
@@ -58,7 +58,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Build and analyze
-        if: ${{ steps.services_changed.output.dir1 == 'true' || steps.services_changed.output.dir2 == 'true' ||steps.services_changed.output.dir3 == 'true' || steps.services_changed.output.dir4 == 'true' || steps.services_changed.output.dir5 == 'true' }}
+        if: steps.services_changed.output.dir1 == 'true' || steps.services_changed.output.dir2 == 'true' ||steps.services_changed.output.dir3 == 'true' || steps.services_changed.output.dir4 == 'true' || steps.services_changed.output.dir5 == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
