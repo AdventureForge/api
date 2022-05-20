@@ -61,7 +61,7 @@ jobs:
         with:
           filters: |
             dir:
-              - '/spring-adventure-service/**'
+              - 'spring-adventure-service/**'
 
       - name: Set up QEMU
         if: steps.service_changed.outputs.dir == 'true'
