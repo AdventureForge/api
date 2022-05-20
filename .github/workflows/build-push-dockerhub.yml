@@ -438,7 +438,7 @@ jobs:
     needs: [ adventure-service,config-server,eureka-server,game-service,gateway-server, sonarcloud-analysis ]
     steps:
       - name: Check sonar-analysis deployment output
-        run: echo deploy = "${{ needs.sonarcloud-analysis.outputs.deploy }}"
+        run: echo deploy = "${{ needs.sonarcloud-analysis.outputs.perform-deployment }}"
 
       - name: prepare deployment
         run: echo TODO DEPLOY SCRIPT
