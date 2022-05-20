@@ -38,7 +38,8 @@ jobs:
       - id: evaluate-need-for-deployment
         name: Evaluate need for deployment
         run: |
-          if [[ ${{ steps.services_changed.outputs.dir1 == 'true' || steps.services_changed.outputs.dir2 == 'true' ||steps.services_changed.outputs.dir3 == 'true' || steps.services_changed.outputs.dir4 == 'true' || steps.services_changed.outputs.dir5 == 'true' }} = true ]]
+          perform_deployment=${{ steps.services_changed.outputs.dir1 == 'true' || steps.services_changed.outputs.dir2 == 'true' ||steps.services_changed.outputs.dir3 == 'true' || steps.services_changed.outputs.dir4 == 'true' || steps.services_changed.outputs.dir5 == 'true' }}
+          if [ $perform_deployment = true ]
           then
             echo "::set-output name=deploy::true"
           else
