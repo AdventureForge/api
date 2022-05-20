@@ -441,5 +441,6 @@ jobs:
         run: echo deploy = "${{ needs.sonarcloud-analysis.outputs.perform-deployment }}"
 
       - name: prepare deployment
+        if: needs.sonarcloud-analysis.outputs.perform-deployment = 'true'
         run: echo TODO DEPLOY SCRIPT
   
