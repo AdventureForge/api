@@ -7,7 +7,7 @@ services:
     ports:
       - "8888:8888"
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=prod
     networks:
       backend:
         aliases:
@@ -20,10 +20,8 @@ services:
       - "8761:8761"
     environment:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=prod
     depends_on:
-      database:
-        condition: service_healthy
       configserver:
         condition: service_started
     networks:
@@ -39,10 +37,8 @@ services:
     environment:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=prod
     depends_on:
-      database:
-        condition: service_healthy
       configserver:
         condition: service_started
       eurekaserver:
@@ -61,13 +57,11 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/adventureforgedb
-      - SPRING_PROFILES_ACTIVE=dev
-      - LOGGING_LEVEL_ROOT=WARN
-      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
+      - SPRING_PROFILES_ACTIVE=prod
+      - LOGGING_LEVEL_ROOT=ERROR
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=ERROR
       - LOGGING_LEVEL_ORG_HIBERNATE=ERROR
     depends_on:
-      database:
-        condition: service_healthy
       configserver:
         condition: service_started
       eurekaserver:
@@ -84,13 +78,11 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/adventureforgedb
-      - SPRING_PROFILES_ACTIVE=dev
-      - LOGGING_LEVEL_ROOT=WARN
-      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
+      - SPRING_PROFILES_ACTIVE=prod
+      - LOGGING_LEVEL_ROOT=ERROR
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=ERROR
       - LOGGING_LEVEL_ORG_HIBERNATE=ERROR
     depends_on:
-      database:
-        condition: service_healthy
       configserver:
         condition: service_started
       eurekaserver:
@@ -98,42 +90,30 @@ services:
     networks:
       - backend
 
-  database:
-    image: "postgres:latest"
-    container_name: "adventureforge-postgres"
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-    volumes:
-      - ../postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      backend:
-        aliases:
-          - "database"
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   reactui:
+    image: morganlmd/adventureforge-reactui
+    container_name: "adventureforge-ui"
+    ports:
+      - "80:80"
+    environment:
+      - API_URI=http://gateway:8890
+      - SPRING_PROFILES_ACTIVE=prod
     depends_on:
       adventure-service:
         condition: service_started
       game-service:
         condition: service_started
-    image: morganlmd/adventureforge-reactui
-    container_name: "adventureforge-ui"
-    ports:
-      - "3000:80"
-    environment:
-      - API_URI=http://gateway:8890
     networks:
       backend:
         aliases:
           - "ui"
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $HOME/.docker/config.json:/config.json
+    command: -- interval 30
 
 networks:
   backend:

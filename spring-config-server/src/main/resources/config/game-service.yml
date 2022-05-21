@@ -15,13 +15,6 @@ spring:
     loadbalancer:
       ribbon:
         enabled: false
-  datasource:
-    url: jdbc:postgresql://localhost:5432/adventureforgedb
-    username: postgres
-    password: postgres
-    hikari:
-      connection-timeout: 2000 #ms
-      maximum-pool-size: 5
   jpa:
     database: POSTGRESQL
     platform: postgres
