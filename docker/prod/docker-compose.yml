@@ -91,7 +91,7 @@ services:
       - backend
 
   reactui:
-    image: morganlmd/adventureforge-reactui
+    image: morganlmd/adventureforge-reactui:latest
     container_name: "adventureforge-ui"
     ports:
       - "80:80"
