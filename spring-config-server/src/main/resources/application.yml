@@ -14,13 +14,12 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: 15s
   profiles:
-    active: git
+    active: native
   cloud:
     config:
       server:
-        git:
-          uri: git@github.com:AdventureForge/cloud-configuration.git
-          search-paths: adventure-forge
+        native:
+          search-locations: filepath
 
 logging:
   pattern:
