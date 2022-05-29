@@ -144,12 +144,12 @@ services:
 
   keycloak:
     image: jboss/keycloak
+    container_name: "adventureforge-keycloak"
     restart: always
     volumes:
       - ../keycloak:/opt/jboss/keycloak/imports
-    command:
-      - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
     environment:
+      KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
       DB_VENDOR: POSTGRES
       DB_ADDR: database
       DB_DATABASE: adventureforgedb
@@ -157,6 +157,9 @@ services:
       DB_PASSWORD: postgres
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
+    depends_on:
+      database:
+        condition: service_healthy
     ports:
       - "8080:8080"
     networks:

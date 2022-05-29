@@ -30,7 +30,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
-    private static final KeycloakClientRequestFactory keycloakClientRequestFactory = new KeycloakClientRequestFactory();
+    public final KeycloakClientRequestFactory keycloakClientRequestFactory;
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
