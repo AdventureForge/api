@@ -30,7 +30,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
-    public final KeycloakClientRequestFactory keycloakClientRequestFactory;
+    public KeycloakClientRequestFactory keycloakClientRequestFactory;
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -41,15 +41,9 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-
-        http
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated();
-
-        http
-                .csrf()
-                .disable();
+        http.authorizeRequests()
+                .anyRequest().authenticated();
+        http.csrf().disable();
     }
 
     @Autowired
