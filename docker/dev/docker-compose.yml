@@ -64,6 +64,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/adventureforgedb
       - SPRING_PROFILES_ACTIVE=dev,testdata
+      - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080/auth/
       - LOGGING_LEVEL_ROOT=WARN
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
       - LOGGING_LEVEL_ORG_HIBERNATE=ERROR
@@ -87,6 +88,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/adventureforgedb
       - SPRING_PROFILES_ACTIVE=dev
+      - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080/auth/
       - LOGGING_LEVEL_ROOT=WARN
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
       - LOGGING_LEVEL_ORG_HIBERNATE=ERROR
@@ -121,21 +123,46 @@ services:
       retries: 5
 
   reactui:
-    depends_on:
-      adventure-service:
-        condition: service_started
-      game-service:
-        condition: service_started
     image: morganlmd/adventureforge-reactui
     container_name: "adventureforge-ui"
     ports:
       - "3000:80"
     environment:
-      - API_URI=http://gateway:8890
+      - 'API_URL=http://gateway:8890'
+      - 'KC_URL=http://keycloak:8080/auth'
+      - 'KC_REALM=adventureforge-api'
+      - 'KC_CLIENTID=adventureforge-ui'
+    depends_on:
+      adventure-service:
+        condition: service_started
+      game-service:
+        condition: service_started
     networks:
       backend:
         aliases:
           - "ui"
+
+  keycloak:
+    image: jboss/keycloak
+    restart: always
+    volumes:
+      - ../keycloak:/opt/jboss/keycloak/imports
+    command:
+      - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: database
+      DB_DATABASE: adventureforgedb
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    networks:
+      backend:
+        aliases:
+          - "keycloak"
 
 networks:
   backend:
