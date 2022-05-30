@@ -47,7 +47,7 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
             CorsConfigurationSource source = request -> {
                 CorsConfiguration configuration = new CorsConfiguration();
                 configuration.setAllowedOrigins(
-                        List.of("http://localhost:3000", "adventureforge.app", "api.adventureforge.app")
+                        List.of("http://localhost:3000", "http://localhost:3000/", "adventureforge.app", "api.adventureforge.app")
                 );
                 configuration.setAllowedMethods(
                         List.of("GET", "POST", "DELETE", "PUT")
