@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +38,7 @@ public class BookController {
     private BookService bookService;
     private BookMapper bookMapper;
 
+    @RolesAllowed({"USER, ADMIN"})
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
@@ -47,6 +49,7 @@ public class BookController {
         );
     }
 
+    @RolesAllowed({"USER, ADMIN"})
     @GetMapping(path = "/{uuid}")
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
@@ -60,6 +63,7 @@ public class BookController {
         );
     }
 
+    @RolesAllowed({"ADMIN"})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @JsonView(View.External.GET.class)
@@ -74,6 +78,7 @@ public class BookController {
         );
     }
 
+    @RolesAllowed({"ADMIN"})
     @PutMapping(path = "/{uuid}")
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
@@ -90,6 +95,7 @@ public class BookController {
         );
     }
 
+    @RolesAllowed({"ADMIN"})
     @DeleteMapping(path = "/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("uuid") String uuid) {

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -40,6 +41,7 @@ public class AuthorController {
     private AuthorService authorService;
     private AuthorMapper authorMapper;
 
+    @RolesAllowed({"USER, ADMIN"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -51,6 +53,7 @@ public class AuthorController {
         );
     }
 
+    @RolesAllowed({"USER, ADMIN"})
     @GetMapping(path = "/search/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -64,6 +67,7 @@ public class AuthorController {
         );
     }
 
+    @RolesAllowed({"USER, ADMIN"})
     @GetMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -76,6 +80,7 @@ public class AuthorController {
         );
     }
 
+    @RolesAllowed({"ADMIN"})
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @JsonView(value = View.External.GET.class)
@@ -89,6 +94,7 @@ public class AuthorController {
         );
     }
 
+    @RolesAllowed({"ADMIN"})
     @PutMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -105,6 +111,7 @@ public class AuthorController {
         );
     }
 
+    @RolesAllowed({"ADMIN"})
     @DeleteMapping(value = "/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("uuid") String uuid) {

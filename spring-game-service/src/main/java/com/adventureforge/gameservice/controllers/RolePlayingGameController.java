@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +39,7 @@ public class RolePlayingGameController {
     private RolePlayingGameService rolePlayingGameService;
     private RolePlayingGameMapper rolePlayingGameMapper;
 
+    @RolesAllowed({"USER, ADMIN"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
@@ -48,6 +50,7 @@ public class RolePlayingGameController {
         );
     }
 
+    @RolesAllowed({"USER, ADMIN"})
     @GetMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
@@ -61,6 +64,7 @@ public class RolePlayingGameController {
         );
     }
 
+    @RolesAllowed({"ADMIN"})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @JsonView(View.External.GET.class)
@@ -75,6 +79,7 @@ public class RolePlayingGameController {
         );
     }
 
+    @RolesAllowed({"ADMIN"})
     @PutMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
@@ -91,6 +96,7 @@ public class RolePlayingGameController {
         );
     }
 
+    @RolesAllowed({"ADMIN"})
     @DeleteMapping(path = "/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("uuid") String uuid) {

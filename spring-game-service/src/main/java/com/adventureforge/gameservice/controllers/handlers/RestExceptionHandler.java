@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -132,6 +133,15 @@ public class RestExceptionHandler {
                 String.format("The parameter '%s' of value '%s' could not be converted to type '%s'",
                         ex.getName(), ex.getValue(), Objects.requireNonNull(ex.getRequiredType()).getSimpleName())
         );
+        responseWrapper.setDebugMessage(ex.getMessage());
+        return this.buildResponseEntity(responseWrapper);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    protected ResponseEntity<Object> handleAccessDenied(AccessDeniedException ex) {
+        ResponseWrapper<Object> responseWrapper = new ResponseWrapper<>(HttpStatus.FORBIDDEN);
+        responseWrapper.setMessage("You are not allowed to access this resource");
         responseWrapper.setDebugMessage(ex.getMessage());
         return this.buildResponseEntity(responseWrapper);
     }

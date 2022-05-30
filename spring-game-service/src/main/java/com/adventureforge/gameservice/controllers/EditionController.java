@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +39,7 @@ public class EditionController {
     private EditionService editionService;
     private EditionMapper editionMapper;
 
+    @RolesAllowed({"USER, ADMIN"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -48,6 +50,7 @@ public class EditionController {
         );
     }
 
+    @RolesAllowed({"USER, ADMIN"})
     @GetMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -59,6 +62,7 @@ public class EditionController {
         );
     }
 
+    @RolesAllowed({"ADMIN"})
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @JsonView(value = View.External.GET.class)
@@ -72,6 +76,7 @@ public class EditionController {
         );
     }
 
+    @RolesAllowed({"ADMIN"})
     @PutMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -90,6 +95,7 @@ public class EditionController {
         );
     }
 
+    @RolesAllowed({"ADMIN"})
     @DeleteMapping("/{uuid}")
     public void deleteByUuid(@PathVariable("uuid") String uuid) {
         this.editionService.delete(UUID.fromString(uuid));
