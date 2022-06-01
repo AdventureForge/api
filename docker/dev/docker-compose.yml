@@ -63,7 +63,7 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/adventureforgedb
-      - SPRING_PROFILES_ACTIVE=dev,testdata
+      - SPRING_PROFILES_ACTIVE=dev
       - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080/auth/
       - LOGGING_LEVEL_ROOT=WARN
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG

@@ -39,7 +39,7 @@ public class EditionController {
     private EditionService editionService;
     private EditionMapper editionMapper;
 
-    @RolesAllowed({"USER, ADMIN"})
+    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -50,7 +50,7 @@ public class EditionController {
         );
     }
 
-    @RolesAllowed({"USER, ADMIN"})
+    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -62,7 +62,7 @@ public class EditionController {
         );
     }
 
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ROLE_ADMIN"})
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @JsonView(value = View.External.GET.class)
@@ -76,7 +76,7 @@ public class EditionController {
         );
     }
 
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ROLE_ADMIN"})
     @PutMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -95,7 +95,7 @@ public class EditionController {
         );
     }
 
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ROLE_ADMIN"})
     @DeleteMapping("/{uuid}")
     public void deleteByUuid(@PathVariable("uuid") String uuid) {
         this.editionService.delete(UUID.fromString(uuid));

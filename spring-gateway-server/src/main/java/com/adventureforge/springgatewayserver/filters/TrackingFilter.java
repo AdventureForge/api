@@ -2,7 +2,6 @@ package com.adventureforge.springgatewayserver.filters;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Base64;
 import org.json.JSONObject;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Base64;
 import java.util.Optional;
 
 @Slf4j
@@ -33,7 +33,7 @@ public class TrackingFilter implements GlobalFilter {
             exchange = filterUtils.setCorrelationId(exchange, correlationID);
             log.debug("tmx-correlation-id generated in tracking filter: {}.", correlationID);
         }
-        log.debug("The authentication name from the token is : " + getUsername(requestHeaders));
+        //log.debug("The authentication name from the token is : " + getUsername(requestHeaders));
 
         return chain.filter(exchange);
     }
@@ -62,12 +62,10 @@ public class TrackingFilter implements GlobalFilter {
         return username;
     }
 
-
-    private JSONObject decodeJWT(String jwt) {
-        String[] splitJwt = jwt.split("\\.");
-        String base64EncodedBody = splitJwt[1];
-        Base64 base64Url = new Base64(true);
-        String body = new String(base64Url.decode(base64EncodedBody));
-        return new JSONObject(body);
+    private JSONObject decodeJWT(String token) {
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+        String[] chunks = token.split("\\.");
+        String payload = new String(decoder.decode(chunks[1]));
+        return new JSONObject(payload);
     }
 }

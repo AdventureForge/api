@@ -39,7 +39,7 @@ public class RolePlayingGameController {
     private RolePlayingGameService rolePlayingGameService;
     private RolePlayingGameMapper rolePlayingGameMapper;
 
-    @RolesAllowed({"USER, ADMIN"})
+    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
@@ -50,7 +50,7 @@ public class RolePlayingGameController {
         );
     }
 
-    @RolesAllowed({"USER, ADMIN"})
+    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
@@ -64,7 +64,7 @@ public class RolePlayingGameController {
         );
     }
 
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ROLE_ADMIN"})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @JsonView(View.External.GET.class)
@@ -79,7 +79,7 @@ public class RolePlayingGameController {
         );
     }
 
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ROLE_ADMIN"})
     @PutMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
@@ -96,7 +96,7 @@ public class RolePlayingGameController {
         );
     }
 
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ROLE_ADMIN"})
     @DeleteMapping(path = "/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("uuid") String uuid) {

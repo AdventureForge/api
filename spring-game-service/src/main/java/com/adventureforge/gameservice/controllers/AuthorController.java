@@ -41,7 +41,7 @@ public class AuthorController {
     private AuthorService authorService;
     private AuthorMapper authorMapper;
 
-    @RolesAllowed({"USER, ADMIN"})
+    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -53,7 +53,7 @@ public class AuthorController {
         );
     }
 
-    @RolesAllowed({"USER, ADMIN"})
+    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping(path = "/search/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -67,7 +67,7 @@ public class AuthorController {
         );
     }
 
-    @RolesAllowed({"USER, ADMIN"})
+    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping(path = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -80,7 +80,7 @@ public class AuthorController {
         );
     }
 
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ROLE_ADMIN"})
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @JsonView(value = View.External.GET.class)
@@ -94,7 +94,7 @@ public class AuthorController {
         );
     }
 
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ROLE_ADMIN"})
     @PutMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
@@ -111,7 +111,7 @@ public class AuthorController {
         );
     }
 
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ROLE_ADMIN"})
     @DeleteMapping(value = "/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("uuid") String uuid) {
