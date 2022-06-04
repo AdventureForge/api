@@ -1,5 +1,6 @@
 package com.adventureforge.adventureservice.config;
 
+import org.keycloak.KeycloakPrincipal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -19,6 +20,11 @@ public class JpaConfig {
         return () -> Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)
-                .map(Authentication::getName);
+                .map(authentication -> {
+                    if (authentication.getPrincipal() instanceof KeycloakPrincipal principal) {
+                        return principal.getKeycloakSecurityContext().getToken().getPreferredUsername();
+                    }
+                    return authentication.getName();
+                });
     }
 }
