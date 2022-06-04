@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -55,8 +56,12 @@ public class EditionService {
                 )).orElseThrow(() -> new EntityNotFoundException(Edition.class, UUID_PARAM, uuid));
     }
 
-    public void delete(UUID uuid) {
+    public void deleteByUuid(UUID uuid) {
         Edition editionToDelete = this.findByUuid(uuid);
         this.editionRepository.deleteById(editionToDelete.getId());
+    }
+
+    public void deleteByListOfUuids(List<UUID> uuids) {
+        uuids.forEach(this::deleteByUuid);
     }
 }

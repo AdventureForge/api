@@ -103,5 +103,15 @@ public class BookCollectionController {
         this.bookCollectionService.deleteByUuid(UUID.fromString(uuid));
     }
 
+    @RolesAllowed({"ROLE_ADMIN"})
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteList(@RequestBody List<String> uuids) {
+        List<UUID> uuidList = uuids
+                .stream()
+                .map(UUID::fromString)
+                .toList();
 
+        this.bookCollectionService.deleteByListOfUuids(uuidList);
+    }
 }

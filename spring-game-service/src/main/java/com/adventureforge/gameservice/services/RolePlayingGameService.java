@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -56,5 +57,9 @@ public class RolePlayingGameService {
     public void deleteByUuid(UUID uuid) {
         RolePlayingGame rolePlayingGameToDelete = this.findByUuid(uuid);
         this.rolePlayingGameRepository.deleteById(rolePlayingGameToDelete.getId());
+    }
+
+    public void deleteByListOfUuids(List<UUID> uuids) {
+        uuids.forEach(this::deleteByUuid);
     }
 }

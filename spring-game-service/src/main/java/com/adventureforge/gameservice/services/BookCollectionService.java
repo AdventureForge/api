@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -62,5 +63,9 @@ public class BookCollectionService {
     public void deleteByUuid(UUID uuid) {
         BookCollection bookCollectionToDelete = this.findByUuid(uuid);
         this.bookCollectionRepository.deleteById(bookCollectionToDelete.getId());
+    }
+
+    public void deleteByListOfUuids(List<UUID> uuids) {
+        uuids.forEach(this::deleteByUuid);
     }
 }

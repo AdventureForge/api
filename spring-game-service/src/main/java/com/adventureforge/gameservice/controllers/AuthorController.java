@@ -115,6 +115,18 @@ public class AuthorController {
     @DeleteMapping(value = "/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("uuid") String uuid) {
-        this.authorService.delete(UUID.fromString(uuid));
+        this.authorService.deleteByUuid(UUID.fromString(uuid));
+    }
+
+    @RolesAllowed({"ROLE_ADMIN"})
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteList(@RequestBody List<String> uuids) {
+        List<UUID> uuidList = uuids
+                .stream()
+                .map(UUID::fromString)
+                .toList();
+
+        this.authorService.deleteByListOfUuids(uuidList);
     }
 }

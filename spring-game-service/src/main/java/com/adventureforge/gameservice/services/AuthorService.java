@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -69,9 +70,12 @@ public class AuthorService {
                 );
     }
 
-    public void delete(UUID uuid) {
+    public void deleteByUuid(UUID uuid) {
         Author authorToDelete = this.findByUuid(uuid);
         this.authorRepository.deleteById(authorToDelete.getId());
+    }
 
+    public void deleteByListOfUuids(List<UUID> uuids) {
+        uuids.forEach(this::deleteByUuid);
     }
 }

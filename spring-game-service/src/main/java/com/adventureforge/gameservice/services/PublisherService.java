@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -51,5 +52,9 @@ public class PublisherService {
     public void deleteByUuid(UUID uuid) {
         Publisher publisherToDelete = this.findByUuid(uuid);
         this.publisherRepository.deleteById(publisherToDelete.getId());
+    }
+
+    public void deleteByListOfUuids(List<UUID> uuids) {
+        uuids.forEach(this::deleteByUuid);
     }
 }

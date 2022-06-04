@@ -109,6 +109,18 @@ public class BookController {
     @DeleteMapping(path = "/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("uuid") String uuid) {
-        this.bookService.delete(UUID.fromString(uuid));
+        this.bookService.deleteByUuid(UUID.fromString(uuid));
+    }
+
+    @RolesAllowed({"ROLE_ADMIN"})
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteList(@RequestBody List<String> uuids) {
+        List<UUID> uuidList = uuids
+                .stream()
+                .map(UUID::fromString)
+                .toList();
+
+        this.bookService.deleteByListOfUuids(uuidList);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -69,8 +70,12 @@ public class BookService {
                 .orElseThrow(() -> new EntityNotFoundException(Book.class, UUID_PARAM, uuid));
     }
 
-    public void delete(UUID uuid) {
+    public void deleteByUuid(UUID uuid) {
         Book bookToDelete = this.findByUuid(uuid);
         this.bookRepository.deleteById(bookToDelete.getId());
+    }
+
+    public void deleteByListOfUuids(List<UUID> uuids) {
+        uuids.forEach(this::deleteByUuid);
     }
 }
