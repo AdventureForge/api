@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Configuration
@@ -21,5 +22,10 @@ public class GameServiceConfig {
         restTemplate.setInterceptors(interceptors);
 
         return restTemplate;
+    }
+
+    @Bean
+    public DateTimeFormatter dateTimeFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 }

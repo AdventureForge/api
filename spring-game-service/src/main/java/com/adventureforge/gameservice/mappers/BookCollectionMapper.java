@@ -6,11 +6,14 @@ import com.adventureforge.gameservice.entities.BookCollection;
 import com.adventureforge.gameservice.entities.Edition;
 import com.adventureforge.gameservice.entities.Publisher;
 import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface BookCollectionMapper {
+
+    DateTimeMapper DATE_TIME_MAPPER_INSTANCE = Mappers.getMapper(DateTimeMapper.class);
 
     default BookCollectionDTO toDTO(BookCollection bookCollection) {
         return BookCollectionDTO.builder()
@@ -24,6 +27,10 @@ public interface BookCollectionMapper {
                         .stream()
                         .map(BaseEntity::getUuid)
                         .collect(Collectors.toSet()))
+                .dateCreated(DATE_TIME_MAPPER_INSTANCE.toFormattedString(bookCollection.getDateCreated()))
+                .userCreated(bookCollection.getUserCreated())
+                .lastModified(DATE_TIME_MAPPER_INSTANCE.toFormattedString(bookCollection.getLastModified()))
+                .userModified(bookCollection.getUserModified())
                 .build();
     }
 

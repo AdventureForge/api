@@ -5,11 +5,14 @@ import com.adventureforge.gameservice.entities.BaseEntity;
 import com.adventureforge.gameservice.entities.Edition;
 import com.adventureforge.gameservice.entities.RolePlayingGame;
 import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface EditionMapper {
+
+    DateTimeMapper DATE_TIME_MAPPER_INSTANCE = Mappers.getMapper(DateTimeMapper.class);
 
     default EditionDTO toDTO(Edition edition) {
         return EditionDTO.builder()
@@ -22,6 +25,10 @@ public interface EditionMapper {
                         .stream()
                         .map(BaseEntity::getUuid)
                         .collect(Collectors.toSet()))
+                .dateCreated(DATE_TIME_MAPPER_INSTANCE.toFormattedString(edition.getDateCreated()))
+                .userCreated(edition.getUserCreated())
+                .lastModified(DATE_TIME_MAPPER_INSTANCE.toFormattedString(edition.getLastModified()))
+                .userModified(edition.getUserModified())
                 .build();
     }
 

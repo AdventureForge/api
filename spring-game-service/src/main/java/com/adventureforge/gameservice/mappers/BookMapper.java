@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public interface BookMapper {
 
     LocaleMapper LOCALE_MAPPER_INSTANCE = Mappers.getMapper(LocaleMapper.class);
+    DateTimeMapper DATE_TIME_MAPPER_INSTANCE = Mappers.getMapper(DateTimeMapper.class);
 
     default BookDTO toDTO(Book book) {
         return BookDTO.builder()
@@ -37,6 +38,10 @@ public interface BookMapper {
                 .rolePlayingGameUuid(book.getBookCollection().getEdition().getRolePlayingGame().getUuid())
                 .editionUuid(book.getBookCollection().getEdition().getUuid())
                 .category(book.getBookCategory().name())
+                .dateCreated(DATE_TIME_MAPPER_INSTANCE.toFormattedString(book.getDateCreated()))
+                .userCreated(book.getUserCreated())
+                .lastModified(DATE_TIME_MAPPER_INSTANCE.toFormattedString(book.getLastModified()))
+                .userModified(book.getUserModified())
                 .build();
     }
 

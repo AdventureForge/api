@@ -46,4 +46,16 @@ public class EditionDTO {
 
     @JsonView(value = {View.External.GET.class})
     private Set<UUID> collectionsUuids;
+
+    @JsonView(value = {View.External.GET.class})
+    private String dateCreated;
+
+    @JsonView(value = {View.External.GET.class})
+    private String lastModified;
+
+    @JsonView(value = {View.External.GET.class})
+    private String userCreated;
+
+    @JsonView(value = {View.External.GET.class})
+    private String userModified;
 }

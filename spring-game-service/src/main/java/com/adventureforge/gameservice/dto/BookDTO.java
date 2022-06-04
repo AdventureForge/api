@@ -76,4 +76,15 @@ public class BookDTO {
     @JsonView(value = {View.External.GET.class})
     private UUID editionUuid;
 
+    @JsonView(value = {View.External.GET.class})
+    private String dateCreated;
+
+    @JsonView(value = {View.External.GET.class})
+    private String lastModified;
+
+    @JsonView(value = {View.External.GET.class})
+    private String userCreated;
+
+    @JsonView(value = {View.External.GET.class})
+    private String userModified;
 }
