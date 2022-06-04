@@ -34,18 +34,18 @@ public class BookDTO {
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String title;
 
-    @Size(min = 1, max = 510, message = "size between 1 and 510")
+    @Size(max = 510, message = "maximum size = 510 characters")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String subtitle;
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String cover;
 
-    @Size(min = 1, max = 65535, message = "size between 1 and 65535")
+    @Size(max = 65535, message = "maximum size = 65535 characters")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String description;
 
-    @Size(min = 2, max = 10, message = "locale must be at least 2 characters long")
+    @Size(max = 10, message = "locale must be at least 2 characters long")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String language;
 

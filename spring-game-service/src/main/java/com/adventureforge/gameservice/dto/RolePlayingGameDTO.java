@@ -33,11 +33,11 @@ public class RolePlayingGameDTO {
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String title;
 
-    @Size(min = 1, max = 255, message = "subtitle length must be between 1 and 255")
+    @Size(max = 255, message = "subtitle length must be between 1 and 255")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String subtitle;
 
-    @Size(min = 1, max = 65535, message = "url length must be between 1 and 65535")
+    @Size(max = 65535, message = "description length must be between 1 and 65535")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String description;
 
@@ -45,7 +45,7 @@ public class RolePlayingGameDTO {
     private String pictureUrl;
 
     @URL
-    @Size(min = 1, max = 2048, message = "url max length is 2048 characters")
+    @Size(max = 2048, message = "url max length is 2048 characters")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String websiteUrl;
 

@@ -34,11 +34,11 @@ public class PublisherDTO {
     private String name;
 
     @URL(message = "URL is invalid")
-    @Size(min = 1, max = 2048, message = "url length must be between 1 and 2048")
+    @Size(max = 2048, message = "url length must be between 1 and 2048")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String websiteUrl;
 
-    @Size(min = 1, max = 65535, message = "url length must be between 1 and 65535")
+    @Size(max = 65535, message = "Description length must maximum 65535 characters long")
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String description;
 
