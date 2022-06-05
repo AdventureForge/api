@@ -45,6 +45,7 @@ public class RolePlayingGameService {
                                 .uuid(rolePlayingGameFromDb.getUuid())
                                 .title(rolePlayingGameToUpdate.getTitle())
                                 .subtitle(rolePlayingGameToUpdate.getSubtitle())
+                                .description(rolePlayingGameToUpdate.getDescription())
                                 .pictureUrl(rolePlayingGameToUpdate.getPictureUrl())
                                 .websiteUrl(rolePlayingGameToUpdate.getWebsiteUrl())
                                 .userCreated(rolePlayingGameFromDb.getUserCreated())

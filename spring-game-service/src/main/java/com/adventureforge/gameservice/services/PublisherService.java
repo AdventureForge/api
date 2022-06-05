@@ -35,12 +35,13 @@ public class PublisherService {
     }
 
     public Publisher update(UUID uuid, Publisher publisherToUpdate) {
-        Publisher publisher = this.publisherRepository.findByUuid(uuid)
+        return this.publisherRepository.findByUuid(uuid)
                 .map(publisherFromDb -> this.publisherRepository.save(
                         Publisher.builder()
                                 .id(publisherFromDb.getId())
                                 .uuid(publisherFromDb.getUuid())
                                 .name(publisherToUpdate.getName())
+                                .description(publisherToUpdate.getDescription())
                                 .websiteUrl(publisherToUpdate.getWebsiteUrl())
                                 .logo(publisherToUpdate.getLogo())
                                 .userCreated(publisherFromDb.getUserCreated())
@@ -51,9 +52,6 @@ public class PublisherService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         Publisher.class, UUID_PARAM, uuid, "publisherToUpdate", publisherToUpdate)
                 );
-
-        log.info(publisher.toString());
-        return publisher;
     }
 
     public void deleteByUuid(UUID uuid) {

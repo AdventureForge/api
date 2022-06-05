@@ -17,6 +17,7 @@ public interface RolePlayingGameMapper {
         return RolePlayingGameDTO.builder()
                 .uuid(rolePlayingGame.getUuid())
                 .title(rolePlayingGame.getTitle())
+                .description(rolePlayingGame.getDescription())
                 .subtitle(rolePlayingGame.getSubtitle())
                 .pictureUrl(rolePlayingGame.getPictureUrl())
                 .websiteUrl(rolePlayingGame.getWebsiteUrl())

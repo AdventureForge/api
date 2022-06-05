@@ -29,6 +29,7 @@ public interface BookCollectionMapper {
                                 .stream()
                                 .map(BaseEntity::getUuid)
                                 .collect(Collectors.toSet()))
+                .rolePlayingGameUuid(bookCollection.getEdition().getRolePlayingGame().getUuid())
                 .dateCreated(DATE_TIME_MAPPER_INSTANCE.toFormattedString(bookCollection.getDateCreated()))
                 .userCreated(bookCollection.getUserCreated())
                 .lastModified(DATE_TIME_MAPPER_INSTANCE.toFormattedString(bookCollection.getLastModified()))

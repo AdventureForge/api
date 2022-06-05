@@ -69,7 +69,7 @@ public class RolePlayingGameController {
     @ResponseStatus(HttpStatus.CREATED)
     @JsonView(View.External.GET.class)
     public ResponseWrapper<RolePlayingGameDTO> create(
-            @RequestBody @Valid @JsonView(View.External.POST.class) RolePlayingGameDTO rolePlayingGameDTO) {
+            @RequestBody @JsonView(View.External.POST.class) @Valid RolePlayingGameDTO rolePlayingGameDTO) {
         return wrap(
                 this.rolePlayingGameMapper.toDTO(
                         this.rolePlayingGameService.create(
