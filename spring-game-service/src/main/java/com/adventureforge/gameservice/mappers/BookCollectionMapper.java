@@ -41,7 +41,7 @@ public interface BookCollectionMapper {
                 .title(bookCollectionDTO.getTitle())
                 .description(bookCollectionDTO.getDescription())
                 .edition(Edition.builder().uuid(bookCollectionDTO.getEditionUuid()).build())
-                .publisher(Publisher.builder().uuid(bookCollectionDTO.getEditionUuid()).build())
+                .publisher(Publisher.builder().uuid(bookCollectionDTO.getPublisherUuid()).build())
                 .build();
     }
 }

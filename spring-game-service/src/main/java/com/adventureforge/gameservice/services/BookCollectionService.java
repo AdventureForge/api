@@ -6,6 +6,7 @@ import com.adventureforge.gameservice.entities.Publisher;
 import com.adventureforge.gameservice.exceptions.EntityNotFoundException;
 import com.adventureforge.gameservice.repositories.BookCollectionRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class BookCollectionService {
@@ -39,6 +41,7 @@ public class BookCollectionService {
 
 
     public BookCollection createWithDependencies(BookCollection bookCollection) {
+        log.info(bookCollection.toString());
         Edition edition = this.editionService.findByUuid(bookCollection.getEdition().getUuid());
         Publisher publisher = this.publisherService.findByUuid(bookCollection.getPublisher().getUuid());
         bookCollection.setEdition(edition);

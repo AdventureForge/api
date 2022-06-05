@@ -22,8 +22,13 @@ public class EditionService {
     private RolePlayingGameService rolePlayingGameService;
     private static final String UUID_PARAM = "uuid";
 
-    public Page<Edition> findAllAPaginated(Pageable pageable) {
+    public Page<Edition> findAllPaginated(Pageable pageable) {
         return this.editionRepository.findAll(pageable);
+    }
+
+    public Page<Edition> findAllByRolePlayingGameUuidPaginated(Pageable pageable, UUID rpgUuid) {
+        RolePlayingGame rpg = this.rolePlayingGameService.findByUuid(rpgUuid);
+        return this.editionRepository.findAllByRolePlayingGame(rpg, pageable);
     }
 
     public Edition findByUuid(UUID uuid) {

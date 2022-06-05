@@ -72,7 +72,7 @@ public class BookCollectionController {
             @RequestBody @Valid @JsonView(View.External.POST.class) BookCollectionDTO bookCollectionDTO) {
         return wrap(
                 this.bookCollectionMapper.toDTO(
-                        this.bookCollectionService.create(
+                        this.bookCollectionService.createWithDependencies(
                                 this.bookCollectionMapper.toEntity(bookCollectionDTO)
                         )
                 )

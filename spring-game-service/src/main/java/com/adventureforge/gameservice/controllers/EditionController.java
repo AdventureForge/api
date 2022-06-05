@@ -45,7 +45,20 @@ public class EditionController {
     @JsonView(value = View.External.GET.class)
     public ResponseWrapper<List<EditionDTO>> findAllPaginated(@ParameterObject Pageable pageable) {
         return wrapPageToList(
-                this.editionService.findAllAPaginated(pageable)
+                this.editionService.findAllPaginated(pageable)
+                        .map(editionMapper::toDTO)
+        );
+    }
+
+    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
+    @GetMapping(path = "/roleplayinggame/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @JsonView(value = View.External.GET.class)
+    public ResponseWrapper<List<EditionDTO>> findAllByRolePlayingGameUuidPaginated(
+            @PathVariable("uuid") String rpgUuid,
+            @ParameterObject Pageable pageable) {
+        return wrapPageToList(
+                this.editionService.findAllByRolePlayingGameUuidPaginated(pageable, UUID.fromString(rpgUuid))
                         .map(editionMapper::toDTO)
         );
     }

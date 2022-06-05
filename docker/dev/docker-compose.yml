@@ -145,7 +145,6 @@ services:
   keycloak:
     image: jboss/keycloak
     container_name: "adventureforge-keycloak"
-    restart: always
     volumes:
       - ../keycloak:/opt/jboss/keycloak/imports
     environment:
