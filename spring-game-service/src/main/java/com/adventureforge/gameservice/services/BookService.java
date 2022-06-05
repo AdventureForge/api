@@ -65,6 +65,10 @@ public class BookService {
                                 .language(bookToUpdate.getLanguage())
                                 .isbn(bookToUpdate.getIsbn())
                                 .bookCategory(bookToUpdate.getBookCategory())
+                                .userCreated(bookFromDb.getUserCreated())
+                                .dateCreated(bookFromDb.getDateCreated())
+                                .lastModified(bookFromDb.getLastModified())
+                                .userModified(bookFromDb.getUserModified())
                                 .build()
                 ))
                 .orElseThrow(() -> new EntityNotFoundException(Book.class, UUID_PARAM, uuid));

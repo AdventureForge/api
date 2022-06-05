@@ -8,6 +8,7 @@ import com.adventureforge.gameservice.services.PublisherService;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ import java.util.UUID;
 
 import static com.adventureforge.gameservice.controllers.wrappers.ResponseWrapper.wrap;
 
+@Slf4j
 @Tag(name = "Publishers")
 @AllArgsConstructor
 @RestController
@@ -43,7 +45,7 @@ public class PublisherController {
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
     public ResponseWrapper<List<PublisherDTO>> findAllPaginated(@ParameterObject Pageable pageable) {
-
+        log.info(pageable.toString());
         return ResponseWrapper.wrapPageToList(
                 this.publisherService.findAllPaginated(pageable)
                         .map(publisherMapper::toDTO)

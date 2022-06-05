@@ -5,6 +5,7 @@ import com.adventureforge.gameservice.entities.RolePlayingGame;
 import com.adventureforge.gameservice.exceptions.EntityNotFoundException;
 import com.adventureforge.gameservice.repositories.EditionRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class EditionService {
@@ -41,19 +43,28 @@ public class EditionService {
     }
 
     public Edition update(UUID uuid, Edition editionToUpdate) {
-        return this.editionRepository.findByUuid(uuid)
+        Edition edition = this.editionRepository.findByUuid(uuid)
                 .map(editionFromDb -> this.editionRepository.save(
                         Edition.builder()
                                 .id(editionFromDb.getId())
                                 .uuid(editionFromDb.getUuid())
                                 .editionNumber(editionToUpdate.getEditionNumber())
                                 .editionTitle(editionToUpdate.getEditionTitle())
+                                .userCreated(editionFromDb.getUserCreated())
+                                .dateCreated(editionFromDb.getDateCreated())
+                                .lastModified(editionFromDb.getLastModified())
+                                .userModified(editionFromDb.getUserModified())
                                 .rolePlayingGame(
                                         this.rolePlayingGameService
                                                 .findByUuid(editionToUpdate.getRolePlayingGame()
                                                         .getUuid()))
                                 .build()
-                )).orElseThrow(() -> new EntityNotFoundException(Edition.class, UUID_PARAM, uuid));
+                )).orElseThrow(() -> new EntityNotFoundException(
+                        Edition.class, UUID_PARAM, uuid, "editionToUpdate", editionToUpdate)
+                );
+
+        log.info(edition.toString());
+        return edition;
     }
 
     public void deleteByUuid(UUID uuid) {

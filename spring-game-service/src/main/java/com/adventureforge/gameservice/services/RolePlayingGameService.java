@@ -47,6 +47,10 @@ public class RolePlayingGameService {
                                 .subtitle(rolePlayingGameToUpdate.getSubtitle())
                                 .pictureUrl(rolePlayingGameToUpdate.getPictureUrl())
                                 .websiteUrl(rolePlayingGameToUpdate.getWebsiteUrl())
+                                .userCreated(rolePlayingGameFromDb.getUserCreated())
+                                .dateCreated(rolePlayingGameFromDb.getDateCreated())
+                                .lastModified(rolePlayingGameFromDb.getLastModified())
+                                .userModified(rolePlayingGameFromDb.getUserModified())
                                 .build()))
                 .orElseThrow(() -> new EntityNotFoundException(
                                 RolePlayingGame.class, UUID_PARAM, uuid

@@ -56,6 +56,10 @@ public class BookCollectionService {
                                 .description(bookCollectionToUpdate.getDescription())
                                 .edition(this.editionService.findByUuid(bookCollectionToUpdate.getEdition().getUuid()))
                                 .publisher(this.publisherService.findByUuid(bookCollectionToUpdate.getPublisher().getUuid()))
+                                .userCreated(bookCollectionFromDb.getUserCreated())
+                                .dateCreated(bookCollectionFromDb.getDateCreated())
+                                .lastModified(bookCollectionFromDb.getLastModified())
+                                .userModified(bookCollectionFromDb.getUserModified())
                                 .build()
                 )).orElseThrow(() -> new EntityNotFoundException(Edition.class, UUID_PARAM, uuid));
     }

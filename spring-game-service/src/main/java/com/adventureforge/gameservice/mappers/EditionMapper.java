@@ -21,10 +21,12 @@ public interface EditionMapper {
                 .editionNumber(edition.getEditionNumber())
                 .editionTitle(edition.getEditionTitle())
                 .rolePlayingGameUuid(edition.getRolePlayingGame().getUuid())
-                .collectionsUuids(edition.getBookCollections()
-                        .stream()
-                        .map(BaseEntity::getUuid)
-                        .collect(Collectors.toSet()))
+                .collectionsUuids(edition.getBookCollections() == null ?
+                        null :
+                        edition.getBookCollections()
+                                .stream()
+                                .map(BaseEntity::getUuid)
+                                .collect(Collectors.toSet()))
                 .dateCreated(DATE_TIME_MAPPER_INSTANCE.toFormattedString(edition.getDateCreated()))
                 .userCreated(edition.getUserCreated())
                 .lastModified(DATE_TIME_MAPPER_INSTANCE.toFormattedString(edition.getLastModified()))

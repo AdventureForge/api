@@ -46,7 +46,6 @@ public class AuthorController {
     @ResponseStatus(HttpStatus.OK)
     @JsonView(value = View.External.GET.class)
     public ResponseWrapper<List<AuthorDTO>> findAllPaginated(@ParameterObject Pageable pageable) {
-        log.debug("Call findAllPaginated");
         return wrapPageToList(
                 this.authorService.findAllPaginated(pageable)
                         .map(authorMapper::toDTO)

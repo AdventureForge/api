@@ -64,6 +64,10 @@ public class AuthorService {
                                 .uuid(authorFromDb.getUuid())
                                 .firstname(authorToUpdate.getFirstname())
                                 .lastname(authorToUpdate.getLastname())
+                                .userCreated(authorFromDb.getUserCreated())
+                                .dateCreated(authorFromDb.getDateCreated())
+                                .lastModified(authorFromDb.getLastModified())
+                                .userModified(authorFromDb.getUserModified())
                                 .build()))
                 .orElseThrow(() -> new EntityNotFoundException(
                         Author.class, UUID_PARAM, uuid, "authorToUpdate", authorToUpdate)

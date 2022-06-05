@@ -20,7 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @Entity
 @Table(name = "publishers")
 @AttributeOverride(name = "id", column = @Column(name = "publisher_id"))

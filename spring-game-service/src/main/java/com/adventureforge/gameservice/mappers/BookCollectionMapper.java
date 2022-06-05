@@ -23,10 +23,12 @@ public interface BookCollectionMapper {
                 .description(bookCollection.getDescription())
                 .editionUuid(bookCollection.getEdition().getUuid())
                 .publisherUuid(bookCollection.getPublisher().getUuid())
-                .booksUuids(bookCollection.getBooks()
-                        .stream()
-                        .map(BaseEntity::getUuid)
-                        .collect(Collectors.toSet()))
+                .booksUuids(bookCollection.getBooks() == null ?
+                        null :
+                        bookCollection.getBooks()
+                                .stream()
+                                .map(BaseEntity::getUuid)
+                                .collect(Collectors.toSet()))
                 .dateCreated(DATE_TIME_MAPPER_INSTANCE.toFormattedString(bookCollection.getDateCreated()))
                 .userCreated(bookCollection.getUserCreated())
                 .lastModified(DATE_TIME_MAPPER_INSTANCE.toFormattedString(bookCollection.getLastModified()))
