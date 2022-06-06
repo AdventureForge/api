@@ -28,8 +28,17 @@ public class CampaignDTO {
     private String title;
 
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
-    private String description;
-
-    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private Set<UUID> adventuresUuid;
+
+    @JsonView(value = {View.External.GET.class})
+    private String dateCreated;
+
+    @JsonView(value = {View.External.GET.class})
+    private String lastModified;
+
+    @JsonView(value = {View.External.GET.class})
+    private String userCreated;
+
+    @JsonView(value = {View.External.GET.class})
+    private String userModified;
 }

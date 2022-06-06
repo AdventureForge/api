@@ -2,7 +2,11 @@ package com.adventureforge.adventureservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -22,9 +26,6 @@ public class AdventureDTO {
     @NotNull
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String title;
-
-    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
-    private String description;
 
     @JsonView(value = {View.External.GET.class})
     private Set<CampaignDTO> campaigns;
@@ -46,4 +47,16 @@ public class AdventureDTO {
 
     @JsonView(value = {View.External.GET.class})
     private Set<PlaceDTO> places;
+    
+    @JsonView(value = {View.External.GET.class})
+    private String dateCreated;
+
+    @JsonView(value = {View.External.GET.class})
+    private String lastModified;
+
+    @JsonView(value = {View.External.GET.class})
+    private String userCreated;
+
+    @JsonView(value = {View.External.GET.class})
+    private String userModified;
 }

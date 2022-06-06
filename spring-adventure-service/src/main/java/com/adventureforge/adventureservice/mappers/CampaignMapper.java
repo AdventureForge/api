@@ -18,13 +18,16 @@ public interface CampaignMapper {
         return CampaignDTO.builder()
                 .uuid(campaign.getUuid())
                 .title(campaign.getTitle())
-                .description(campaign.getDescription())
                 .adventuresUuid(campaign.getAdventures() == null ?
                         null :
                         campaign.getAdventures()
                                 .stream()
                                 .map(BaseEntity::getUuid)
                                 .collect(Collectors.toSet()))
+                .dateCreated(DATE_TIME_MAPPER_INSTANCE.toFormattedString(campaign.getDateCreated()))
+                .userCreated(campaign.getUserCreated())
+                .lastModified(DATE_TIME_MAPPER_INSTANCE.toFormattedString(campaign.getLastModified()))
+                .userModified(campaign.getUserModified())
                 .build();
     }
 
@@ -32,7 +35,6 @@ public interface CampaignMapper {
         return Campaign.builder()
                 .uuid(campaignDTO.getUuid())
                 .title(campaignDTO.getTitle())
-                .description(campaignDTO.getDescription())
                 .adventures(campaignDTO
                         .getAdventuresUuid()
                         .stream()

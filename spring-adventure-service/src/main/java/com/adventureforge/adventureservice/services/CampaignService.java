@@ -1,6 +1,5 @@
 package com.adventureforge.adventureservice.services;
 
-import com.adventureforge.adventureservice.entities.Adventure;
 import com.adventureforge.adventureservice.entities.Campaign;
 import com.adventureforge.adventureservice.exceptions.EntityNotFoundException;
 import com.adventureforge.adventureservice.repositories.CampaignRepository;
@@ -36,7 +35,6 @@ public class CampaignService {
     }
 
     public Campaign createWithDependencies(Campaign campaign) {
-        Adventure adventure;
         return this.create(campaign);
     }
 
@@ -48,7 +46,6 @@ public class CampaignService {
                                 .id(campaignFromDb.getId())
                                 .uuid(campaignFromDb.getUuid())
                                 .title(campaignToUpdate.getTitle())
-                                .description(campaignToUpdate.getDescription())
                                 .adventures(campaignToUpdate.getAdventures())
                                 .build()
                 )).orElseThrow(() -> new EntityNotFoundException(

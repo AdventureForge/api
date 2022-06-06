@@ -30,10 +30,6 @@ public class Campaign extends BaseEntity {
 
     @Column(name = "title")
     private String title;
-
-    @Column(length = 1024)
-    private String description;
-
     @ManyToMany
     @JoinTable(
             name = "campaign_adventure",

@@ -37,4 +37,16 @@ public class AppendixDTO {
 
     @JsonView(value = {View.External.GET.class})
     private Set<AdventureDTO> adventures;
+
+    @JsonView(value = {View.External.GET.class})
+    private String dateCreated;
+
+    @JsonView(value = {View.External.GET.class})
+    private String lastModified;
+
+    @JsonView(value = {View.External.GET.class})
+    private String userCreated;
+
+    @JsonView(value = {View.External.GET.class})
+    private String userModified;
 }

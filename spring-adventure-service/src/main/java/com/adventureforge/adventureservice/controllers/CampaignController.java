@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.adventureforge.adventureservice.controllers.wrappers.ResponseWrapper.wrap;
+import static com.adventureforge.adventureservice.controllers.wrappers.ResponseWrapper.wrapPageToList;
 
 @Slf4j
 @Tag(name = "Campaign")
@@ -45,8 +46,10 @@ public class CampaignController {
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
     public ResponseWrapper<List<CampaignDTO>> findAllPaginated(@ParameterObject Pageable pageable, Principal principal) {
-        return ResponseWrapper.wrapPageToList(
-                this.campaignService.findAllPaginatedFilteredByUserCreated(principal.getName(), pageable)
+        return wrapPageToList(
+                this.campaignService
+                        .findAllPaginatedFilteredByUserCreated(principal.getName(), pageable)
+                        .map(campaignMapper::toDTO)
         );
     }
 
