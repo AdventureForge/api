@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -47,12 +44,7 @@ public class BookController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @JsonView(View.External.GET.class)
-    public ResponseWrapper<List<BookDTO>> findAllPaginated(@ParameterObject Pageable pageable, HttpServletRequest servletRequest) {
-        log.info(servletRequest.getHeader("Authorization"));
-        SecurityContext context = SecurityContextHolder.getContext();
-        log.info(context.getAuthentication().getAuthorities().toString());
-        log.info(String.valueOf(context.getAuthentication().isAuthenticated()));
-        log.info(context.getAuthentication().getPrincipal().toString());
+    public ResponseWrapper<List<BookDTO>> findAllPaginated(@ParameterObject Pageable pageable) {
         return wrapPageToList(
                 this.bookService.findAll(pageable)
                         .map(bookMapper::toDTO)
@@ -79,6 +71,7 @@ public class BookController {
     @JsonView(View.External.GET.class)
     public ResponseWrapper<BookDTO> create(
             @RequestBody @JsonView(View.External.POST.class) @Valid BookDTO bookDTO) {
+        log.info(bookDTO.toString());
         return wrap(
                 this.bookMapper.toDTO(
                         this.bookService.createBookWithDependencies(

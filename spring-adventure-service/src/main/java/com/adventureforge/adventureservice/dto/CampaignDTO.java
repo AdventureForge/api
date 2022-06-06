@@ -30,6 +30,6 @@ public class CampaignDTO {
     @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
     private String description;
 
-    @JsonView(value = {View.External.GET.class})
-    private Set<AdventureDTO> adventures;
+    @JsonView(value = {View.External.GET.class, View.External.PUT.class, View.External.POST.class})
+    private Set<UUID> adventuresUuid;
 }

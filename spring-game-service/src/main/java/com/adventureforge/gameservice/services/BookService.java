@@ -62,8 +62,18 @@ public class BookService {
                                 .subtitle(bookToUpdate.getSubtitle())
                                 .cover(bookToUpdate.getCover())
                                 .description(bookToUpdate.getDescription())
+                                .bookCollection(
+                                        this.bookCollectionService
+                                                .findByUuid(bookToUpdate.getBookCollection().getUuid()
+                                                )
+                                )
                                 .language(bookToUpdate.getLanguage())
                                 .isbn(bookToUpdate.getIsbn())
+                                .authors(bookToUpdate
+                                        .getAuthors()
+                                        .stream()
+                                        .map(author -> this.authorService.findByUuid(author.getUuid())
+                                        ).collect(Collectors.toSet()))
                                 .bookCategory(bookToUpdate.getBookCategory())
                                 .userCreated(bookFromDb.getUserCreated())
                                 .dateCreated(bookFromDb.getDateCreated())

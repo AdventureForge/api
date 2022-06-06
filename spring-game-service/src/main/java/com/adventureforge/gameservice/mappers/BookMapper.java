@@ -24,6 +24,7 @@ public interface BookMapper {
                 .title(book.getTitle())
                 .subtitle(book.getSubtitle())
                 .description(book.getDescription())
+                .cover(book.getCover())
                 .language(LOCALE_MAPPER_INSTANCE.localeToString(book.getLanguage()))
                 .isbn(book.getIsbn())
                 .authorsUuid(
