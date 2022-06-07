@@ -24,10 +24,8 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
       - SPRING_PROFILES_ACTIVE=dev
     depends_on:
-      database:
-        condition: service_healthy
-      configserver:
-        condition: service_started
+      - database
+      - configserver
     networks:
       backend:
         aliases:
@@ -43,12 +41,9 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
       - SPRING_PROFILES_ACTIVE=dev
     depends_on:
-      database:
-        condition: service_healthy
-      configserver:
-        condition: service_started
-      eurekaserver:
-        condition: service_started
+      - database
+      - configserver
+      - eurekaserver
     networks:
       backend:
         aliases:
@@ -69,12 +64,9 @@ services:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
       - LOGGING_LEVEL_ORG_HIBERNATE=ERROR
     depends_on:
-      database:
-        condition: service_healthy
-      configserver:
-        condition: service_started
-      eurekaserver:
-        condition: service_started
+      - database
+      - configserver
+      - eurekaserver
     networks:
       - backend
 
@@ -93,12 +85,9 @@ services:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
       - LOGGING_LEVEL_ORG_HIBERNATE=ERROR
     depends_on:
-      database:
-        condition: service_healthy
-      configserver:
-        condition: service_started
-      eurekaserver:
-        condition: service_started
+      - database
+      - configserver
+      - eurekaserver
     networks:
       - backend
 
@@ -133,10 +122,8 @@ services:
       - 'KC_REALM=adventureforge-api'
       - 'KC_CLIENTID=adventureforge-ui'
     depends_on:
-      adventure-service:
-        condition: service_started
-      game-service:
-        condition: service_started
+      - adventure-service
+      - game-service
     networks:
       backend:
         aliases:
@@ -157,8 +144,7 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
     depends_on:
-      database:
-        condition: service_healthy
+      - database
     ports:
       - "8080:8080"
     networks:
