@@ -23,8 +23,7 @@ services:
     environment:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
     depends_on:
-      configserver:
-        condition: service_started
+      - configserver
     networks:
       backend:
         aliases:
@@ -39,10 +38,8 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
     depends_on:
-      configserver:
-        condition: service_started
-      eurekaserver:
-        condition: service_started
+      - configserver
+      - eurekaserver
     networks:
       backend:
         aliases:
@@ -68,10 +65,8 @@ services:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=INFO
       - LOGGING_LEVEL_ORG_HIBERNATE=INFO
     depends_on:
-      configserver:
-        condition: service_started
-      eurekaserver:
-        condition: service_started
+      - configserver
+      - eurekaserver
     networks:
       - backend
 
@@ -95,10 +90,8 @@ services:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=INFO
       - LOGGING_LEVEL_ORG_HIBERNATE=INFO
     depends_on:
-      configserver:
-        condition: service_started
-      eurekaserver:
-        condition: service_started
+      - configserver
+      - eurekaserver
     networks:
       - backend
 
