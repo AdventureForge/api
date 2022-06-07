@@ -90,7 +90,7 @@ services:
     environment:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:postgresql:${DB_ADDR}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql:${DB_URL}/${DB_PORT}/${DB_NAME}
       - SPRING_PROFILES_ACTIVE=prod
       - KEYCLOAK_AUTH_SERVER_URL=${KC_URL}
       - LOGGING_LEVEL_ROOT=INFO
