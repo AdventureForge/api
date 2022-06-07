@@ -6,7 +6,10 @@ services:
     container_name: "config-server"
     ports:
       - "8888:8888"
+    volumes:
+      - ~/cloud-configuration/adventure-forge:/root/config
     environment:
+      - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS=/root/config
       - SPRING_PROFILES_ACTIVE=prod
     networks:
       backend:
@@ -56,11 +59,21 @@ services:
     environment:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/adventureforgedb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql:${DB_URL}/${DB_PORT}/${DB_NAME}
       - SPRING_PROFILES_ACTIVE=prod
-      - LOGGING_LEVEL_ROOT=ERROR
-      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=ERROR
-      - LOGGING_LEVEL_ORG_HIBERNATE=ERROR
+      - KEYCLOAK_AUTH_SERVER_URL=${KC_URL}
+      - LOGGING_LEVEL_ROOT=INFO
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=INFO
+      - LOGGING_LEVEL_ORG_HIBERNATE=INFO
+      - DB_URL=${DB_URL}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - KC_URL=${KC_URL}
+      - KC_SECRET=${KC_SECRET}
+      - KC_REALM=${KC_REALM}
+      - KC_RESOURCE=${KC_RESOURCE}
     depends_on:
       configserver:
         condition: service_started
@@ -77,11 +90,21 @@ services:
     environment:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/adventureforgedb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql:${DB_ADDR}
       - SPRING_PROFILES_ACTIVE=prod
-      - LOGGING_LEVEL_ROOT=ERROR
-      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=ERROR
-      - LOGGING_LEVEL_ORG_HIBERNATE=ERROR
+      - KEYCLOAK_AUTH_SERVER_URL=${KC_URL}
+      - LOGGING_LEVEL_ROOT=INFO
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=INFO
+      - LOGGING_LEVEL_ORG_HIBERNATE=INFO
+      - DB_URL=${DB_URL}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - KC_URL=${KC_URL}
+      - KC_SECRET=${KC_SECRET}
+      - KC_REALM=${KC_REALM}
+      - KC_RESOURCE=${KC_RESOURCE}
     depends_on:
       configserver:
         condition: service_started
@@ -90,30 +113,11 @@ services:
     networks:
       - backend
 
-  reactui:
-    image: morganlmd/adventureforge-reactui:latest
-    container_name: "adventureforge-ui"
-    ports:
-      - "80:80"
-    environment:
-      - API_URI=http://gateway:8890
-      - SPRING_PROFILES_ACTIVE=prod
-    depends_on:
-      adventure-service:
-        condition: service_started
-      game-service:
-        condition: service_started
-    networks:
-      backend:
-        aliases:
-          - "ui"
-
   watchtower:
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - $HOME/.docker/config.json:/config.json
-    command: -- interval 30
+    command: --interval 30 config-server eureka-server gateway-server game-service adventure-service
 
 networks:
   backend:

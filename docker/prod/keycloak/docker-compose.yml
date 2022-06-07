@@ -19,6 +19,6 @@ services:
       PROXY_ADDRESS_FORWARDING: "true"
       REDIRECT_SOCKET: "proxy-https"
       KEYCLOAK_FRONTEND_URL: ${KC_DOMAIN}
-      JDBC_PARAMS=sslmode=require&sslcert=ca-certificate.crt
+      JDBC_PARAMS: sslmode=require&sslcert=ca-certificate.crt
     ports:
       - "8080:8080"
