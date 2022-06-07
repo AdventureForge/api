@@ -10,7 +10,6 @@ services:
       - ~/cloud-configuration/adventure-forge:/root/config
     environment:
       - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS=/root/config
-      - SPRING_PROFILES_ACTIVE=prod
     networks:
       backend:
         aliases:
@@ -23,7 +22,6 @@ services:
       - "8761:8761"
     environment:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
-      - SPRING_PROFILES_ACTIVE=prod
     depends_on:
       configserver:
         condition: service_started
@@ -40,7 +38,6 @@ services:
     environment:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
-      - SPRING_PROFILES_ACTIVE=prod
     depends_on:
       configserver:
         condition: service_started
