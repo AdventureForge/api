@@ -95,12 +95,6 @@ services:
     networks:
       - backend
 
-  watchtower:
-    image: containrrr/watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30 config-server eureka-server gateway-server game-service adventure-service
-
 networks:
   backend:
     driver: bridge
