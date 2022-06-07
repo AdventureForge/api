@@ -1,9 +1,9 @@
-version: "3.8"
+version: "3.7"
 services:
 
   configserver:
     image: morganlmd/adventureforge-configserver:latest
-    container_name: "config-server"
+    container_name: "adventureforge-config-server-test"
     ports:
       - "8888:8888"
     volumes:
@@ -17,17 +17,15 @@ services:
 
   eurekaserver:
     image: morganlmd/adventureforge-eurekaserver:latest
-    container_name: "eureka-server"
+    container_name: "adventureforge-eureka-server-test"
     ports:
       - "8761:8761"
     environment:
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
       - SPRING_PROFILES_ACTIVE=dev
     depends_on:
-      database:
-        condition: service_healthy
-      configserver:
-        condition: service_started
+      - database
+      - configserver
     networks:
       backend:
         aliases:
@@ -35,7 +33,7 @@ services:
 
   gatewayserver:
     image: morganlmd/adventureforge-gatewayserver:latest
-    container_name: "gateway-server"
+    container_name: "adventureforge-gateway-server-test"
     ports:
       - "8890:8890"
     environment:
@@ -43,12 +41,9 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
       - SPRING_PROFILES_ACTIVE=dev
     depends_on:
-      database:
-        condition: service_healthy
-      configserver:
-        condition: service_started
-      eurekaserver:
-        condition: service_started
+      - database
+      - configserver
+      - eurekaserver
     networks:
       backend:
         aliases:
@@ -56,7 +51,7 @@ services:
 
   game-service:
     image: morganlmd/adventureforge-gameservice:latest
-    container_name: "game-service"
+    container_name: "adventureforge-game-service-test"
     ports:
       - "9001:9001"
     environment:
@@ -69,18 +64,15 @@ services:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
       - LOGGING_LEVEL_ORG_HIBERNATE=ERROR
     depends_on:
-      database:
-        condition: service_healthy
-      configserver:
-        condition: service_started
-      eurekaserver:
-        condition: service_started
+      - database
+      - configserver
+      - eurekaserver
     networks:
       - backend
 
   adventure-service:
     image: morganlmd/adventureforge-adventureservice:latest
-    container_name: "adventure-service"
+    container_name: "adventureforge-adventure-service-test"
     ports:
       - "9002:9002"
     environment:
@@ -93,18 +85,15 @@ services:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
       - LOGGING_LEVEL_ORG_HIBERNATE=ERROR
     depends_on:
-      database:
-        condition: service_healthy
-      configserver:
-        condition: service_started
-      eurekaserver:
-        condition: service_started
+      - database
+      - configserver
+      - eurekaserver
     networks:
       - backend
 
   database:
     image: "postgres:latest"
-    container_name: "adventureforge-postgres"
+    container_name: "adventureforge-postgres-test"
     ports:
       - "5432:5432"
     environment:
@@ -124,7 +113,7 @@ services:
 
   reactui:
     image: morganlmd/adventureforge-reactui
-    container_name: "adventureforge-ui"
+    container_name: "adventureforge-ui-test"
     ports:
       - "3000:80"
     environment:
@@ -133,10 +122,8 @@ services:
       - 'KC_REALM=adventureforge-api'
       - 'KC_CLIENTID=adventureforge-ui'
     depends_on:
-      adventure-service:
-        condition: service_started
-      game-service:
-        condition: service_started
+      - adventure-service
+      - game-service
     networks:
       backend:
         aliases:
@@ -144,7 +131,7 @@ services:
 
   keycloak:
     image: jboss/keycloak
-    container_name: "adventureforge-keycloak"
+    container_name: "adventureforge-keycloak-test"
     volumes:
       - ../keycloak:/opt/jboss/keycloak/imports
     environment:
@@ -157,8 +144,7 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
     depends_on:
-      database:
-        condition: service_healthy
+      - database
     ports:
       - "8080:8080"
     networks:
