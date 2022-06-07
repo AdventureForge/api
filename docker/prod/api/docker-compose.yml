@@ -3,7 +3,7 @@ services:
 
   configserver:
     image: morganlmd/adventureforge-configserver:latest
-    container_name: "config-server"
+    container_name: "adventureforge-config-server-prod"
     ports:
       - "8888:8888"
     volumes:
@@ -17,7 +17,7 @@ services:
 
   eurekaserver:
     image: morganlmd/adventureforge-eurekaserver:latest
-    container_name: "eureka-server"
+    container_name: "adventureforge-eureka-server-prod"
     ports:
       - "8761:8761"
     environment:
@@ -31,7 +31,7 @@ services:
 
   gatewayserver:
     image: morganlmd/adventureforge-gatewayserver:latest
-    container_name: "gateway-server"
+    container_name: "adventureforge-gateway-server-prod"
     ports:
       - "8890:8890"
     environment:
@@ -47,7 +47,7 @@ services:
 
   game-service:
     image: morganlmd/adventureforge-gameservice:latest
-    container_name: "game-service"
+    container_name: "adventureforge-game-service-prod"
     ports:
       - "9001:9001"
     environment:
@@ -72,7 +72,7 @@ services:
 
   adventure-service:
     image: morganlmd/adventureforge-adventureservice:latest
-    container_name: "adventure-service"
+    container_name: "adventureforge-adventure-service-prod"
     ports:
       - "9002:9002"
     environment:
