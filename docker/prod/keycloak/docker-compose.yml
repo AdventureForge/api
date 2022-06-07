@@ -6,6 +6,7 @@ services:
     container_name: "adventureforge-keycloak"
     volumes:
       - ../../keycloak:/opt/jboss/keycloak/imports
+      - ~/certs/ca-certificate.crt:/root/.postgresql/ca-certificate.crt
     environment:
       KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
       DB_VENDOR: POSTGRES
@@ -18,5 +19,6 @@ services:
       PROXY_ADDRESS_FORWARDING: "true"
       REDIRECT_SOCKET: "proxy-https"
       KEYCLOAK_FRONTEND_URL: ${KC_DOMAIN}
+      JDBC_PARAMS=sslmode=require&sslcert=ca-certificate.crt
     ports:
       - "8080:8080"
