@@ -1,0 +1,130 @@
+version: "3.8"
+services:
+
+  eurekaserver:
+    image: morganlmd/adventureforge-eurekaserver-demo:latest
+    container_name: "eureka-server-demo"
+    ports:
+      - "8761:8761"
+    depends_on:
+      - database
+    networks:
+      backend:
+        aliases:
+          - "eurekaserver"
+
+  gatewayserver:
+    image: morganlmd/adventureforge-gatewayserver-demo:latest
+    container_name: "gateway-server-demo"
+    ports:
+      - "8890:8890"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
+    depends_on:
+      - database
+      - eurekaserver
+    networks:
+      backend:
+        aliases:
+          - "gateway"
+
+  game-service:
+    image: morganlmd/adventureforge-gameservice-demo:latest
+    container_name: "game-service-demo"
+    ports:
+      - "9001:9001"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/adventureforgedb
+      - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080/auth/
+      - LOGGING_LEVEL_ROOT=INFO
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=INFO
+      - LOGGING_LEVEL_ORG_HIBERNATE=INFO
+    depends_on:
+      - database
+      - eurekaserver
+    networks:
+      - backend
+
+  adventure-service:
+    image: morganlmd/adventureforge-adventureservice-demo:latest
+    container_name: "adventure-service-demo"
+    ports:
+      - "9002:9002"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/adventureforgedb
+      - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080/auth/
+      - LOGGING_LEVEL_ROOT=INFO
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=INFO
+      - LOGGING_LEVEL_ORG_HIBERNATE=INFO
+    depends_on:
+      - database
+      - eurekaserver
+    networks:
+      - backend
+
+  database:
+    image: "postgres:latest"
+    container_name: "adventureforge-postgres-demo"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - ../postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      backend:
+        aliases:
+          - "database"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  reactui:
+    image: morganlmd/adventureforge-reactui
+    container_name: "adventureforge-ui-demo"
+    ports:
+      - "3000:80"
+    environment:
+      - 'API_URL=http://gateway:8890'
+      - 'KC_URL=http://keycloak:8080/auth'
+      - 'KC_REALM=adventureforge-api'
+      - 'KC_CLIENTID=adventureforge-ui'
+    depends_on:
+      - adventure-service
+      - game-service
+    networks:
+      backend:
+        aliases:
+          - "ui"
+
+  keycloak:
+    image: jboss/keycloak
+    container_name: "adventureforge-keycloak-demo"
+    volumes:
+      - ../keycloak:/opt/jboss/keycloak/imports
+    environment:
+      KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
+      DB_VENDOR: POSTGRES
+      DB_ADDR: database
+      DB_DATABASE: adventureforgedb
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    depends_on:
+      - database
+    ports:
+      - "8080:8080"
+    networks:
+      backend:
+        aliases:
+          - "keycloak"
+
+networks:
+  backend:
+    driver: bridge

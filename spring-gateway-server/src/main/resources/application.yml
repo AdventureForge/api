@@ -1,20 +1,83 @@
+server:
+  port: 8890
+  shutdown: graceful
+  tomcat:
+    connection-timeout: 2s
+    keep-alive-timeout: 15s
+    threads:
+      max: 50
+      min-spare: 5
+
 spring:
   application:
     name: gateway-server
   lifecycle:
     timeout-per-shutdown-phase: 15s
-  config:
-    import: 'optional:configserver:'
   cloud:
-    config:
-      enabled: true # When using Config Service, set to true
-      request-connect-timeout: 5000 # 5s
-      request-read-timeout: 5000 # 5s
-      fail-fast: false # In production, set to true
-      retry:
-        max-attempts: 6
-        initial-interval: 1000 # 1s
-        max-interval: 2000 # 2s
-        multiplier: 1.1
+    loadbalancer:
+      ribbon:
+        enabled: false
+    gateway:
+      globalcors:
+        cors-configurations:
+          "[/**]":
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+      routes:
+        - id: adventure-service
+          uri: lb://adventure-service
+          predicates:
+            - Path=/adventures/**
+          filters:
+            - RewritePath=/adventures/(?<path>.*), /$\{path}
+            - RemoveRequestHeader= Cookie,Set-Cookie
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+        - id: game-service
+          uri: lb://game-service
+          predicates:
+            - Path=/games/**
+          filters:
+            - RewritePath=/games/(?<path>.*), /$\{path}
+            - RemoveRequestHeader= Cookie,Set-Cookie
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
 
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
 
+logging:
+  level:
+    com.netflix: WARN
+    org.springframework.web: WARN
+    com.adventureforge: DEBUG
+
+info:
+  system: Adventure Forge - gateway service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: configprops, env, flyway, health, heapdump, info, loggers, mappings
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
